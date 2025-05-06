@@ -17,13 +17,20 @@ pnpm add aci-typescript-sdk
 ## Usage
 
 ```typescript
-import { ACI, SecurityScheme } from 'aci-typescript-sdk';
+import { ACI } from 'aci-typescript-sdk';
 
-// Initialize the client
-const client = new ACI(process.env.ACI_API_KEY);
+// Initialize the client with configuration
+const client = new ACI({
+  apiKey: process.env.ACI_API_KEY,
+  // Optional: Configure retry settings
+  maxRetries: 3,
+  retryMinWait: 1000,
+  retryMaxWait: 10000,
+  retryMultiplier: 2,
+});
 
 // Search for apps
-const apps = await client.searchApps({
+const apps = await client.apps.search({
   intent: "I want to search the web",
   allowed_apps_only: false,
   include_functions: true,
@@ -32,24 +39,24 @@ const apps = await client.searchApps({
 });
 
 // Get app details
-const appDetails = await client.getApp("BRAVE_SEARCH");
+const appDetails = await client.apps.get("BRAVE_SEARCH");
 
 // Create app configuration
-const configuration = await client.createAppConfiguration(
+const configuration = await client.appConfigurations.create(
   "GMAIL",
-  SecurityScheme.OAUTH2
+  "OAUTH2"
 );
 
 // Link an account
-const account = await client.linkAccount({
+const account = await client.linkedAccounts.link({
   app_name: "BRAVE_SEARCH",
   linked_account_owner_id: "user123",
-  security_scheme: SecurityScheme.API_KEY,
+  security_scheme: "API_KEY",
   api_key: "your-api-key"
 });
 
 // Execute a function
-const result = await client.executeFunction({
+const result = await client.functions.execute({
   function_name: "BRAVE_SEARCH__WEB_SEARCH",
   function_parameters: { query: { q: "what is the weather in barcelona" } },
   linked_account_owner_id: "john_doe"
@@ -69,6 +76,8 @@ if (result.success) {
 - Promise-based async/await interface
 - Environment variable support for API key
 - Comprehensive type definitions
+- Automatic retry mechanism for failed requests
+- Resource-based API organization
 
 ## API Reference
 

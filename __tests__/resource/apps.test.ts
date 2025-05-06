@@ -1,5 +1,4 @@
 import { ACI } from '../../src/client';
-import { v4 as uuidv4 } from 'uuid';
 import dotenv from 'dotenv';
 import { describe, test, expect } from '@jest/globals';
 

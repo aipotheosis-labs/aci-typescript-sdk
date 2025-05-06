@@ -1,5 +1,5 @@
 {
-  "name": "aci-typescript-sdk",
+  "name": "@aci-sdk/aci",
   "version": "0.1.0-alpha",
   "description": "TypeScript SDK for ACI (Agent-Computer Interface) by Aipolabs",
   "main": "dist/index.js",
@@ -18,8 +18,15 @@
     "typescript",
     "api"
   ],
-  "author": "",
+  "author": "Aipolabs",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jiweiyuan/aci-typescript-sdk.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
     "@types/dotenv": "^8.2.3",
