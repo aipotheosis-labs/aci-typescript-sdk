@@ -94,3 +94,7 @@ For detailed API documentation, please refer to the [official ACI documentation]
 ## License
 
 MIT
+
+## Contributing
+
+We wcome contributions! Please see the [CONTRIBUTING.md](CONTRIBUTING.md) file for details.
