@@ -29,17 +29,18 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
 
-      - name: Configure npm
+      - name: Setup npm authentication
         run: |
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-          echo "registry=https://registry.npmjs.org/" >> .npmrc
-          echo "always-auth=true" >> .npmrc
-          echo "@aci-sdk:registry=https://registry.npmjs.org/" >> .npmrc
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
-          cat .npmrc
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+          echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
+          echo "always-auth=true" >> ~/.npmrc
+          echo "@aci-sdk:registry=https://registry.npmjs.org/" >> ~/.npmrc
+          chmod 600 ~/.npmrc
 
       - name: Verify npm authentication
-        run: npm whoami
+        run: |
+          npm config list
+          npm whoami --registry https://registry.npmjs.org/
 
       - name: Create Release Pull Request or Publish
         id: changesets
