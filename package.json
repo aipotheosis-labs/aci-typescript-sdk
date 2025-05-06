@@ -27,7 +27,8 @@
     "url": "https://github.com/jiweiyuan/aci-typescript-sdk.git"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
