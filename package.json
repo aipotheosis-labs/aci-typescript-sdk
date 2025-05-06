@@ -1,6 +1,6 @@
 {
   "name": "@aci-sdk/aci",
-  "version": "0.1.2-alpha",
+  "version": "0.1.3-alpha",
   "description": "TypeScript SDK for ACI (Agent-Computer Interface) by Aipolabs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -24,7 +24,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jiweiyuan/aci-typescript-sdk.git"
+    "url": "https://github.com/aipotheosis-labs/aci-typescript-sdk.git"
   },
   "publishConfig": {
     "access": "public",
