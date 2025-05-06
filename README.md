@@ -7,17 +7,17 @@ The ACI TypeScript SDK provides convenient access to the ACI REST API from any T
 ## Installation
 
 ```bash
-npm install aci-typescript-sdk
+npm install @aci-sdk/aci
 # or
-yarn add aci-typescript-sdk
+yarn add @aci-sdk/aci
 # or
-pnpm add aci-typescript-sdk
+pnpm add @aci-sdk/aci
 ```
 
 ## Usage
 
 ```typescript
-import { ACI } from 'aci-typescript-sdk';
+import { ACI } from '@aci-sdk/aci';
 
 // Initialize the client with configuration
 const client = new ACI({
