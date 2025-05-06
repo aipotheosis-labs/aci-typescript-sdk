@@ -35,6 +35,11 @@ jobs:
           echo "registry=https://registry.npmjs.org/" >> .npmrc
           echo "always-auth=true" >> .npmrc
           echo "@aci-sdk:registry=https://registry.npmjs.org/" >> .npmrc
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
+          cat .npmrc
+
+      - name: Verify npm authentication
+        run: npm whoami
 
       - name: Create Release Pull Request or Publish
         id: changesets
