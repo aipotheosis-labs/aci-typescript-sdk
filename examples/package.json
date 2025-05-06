@@ -1,0 +1,19 @@
+{
+  "name": "aci-typescript-sdk-examples",
+  "version": "1.0.0",
+  "description": "Examples for the ACI TypeScript SDK",
+  "private": true,
+  "scripts": {
+    "start": "pnpm tsx example1.ts",
+    "dev": "pnpm tsx watch example1.ts"
+  },
+  "dependencies": {
+    "@types/dotenv": "^8.2.3",
+    "aci-typescript-sdk": "file:..",
+    "dotenv": "^16.5.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.7.0",
+    "typescript": "^5.0.0"
+  }
+}
