@@ -4,7 +4,6 @@
   "description": "TypeScript SDK for ACI (Agent-Computer Interface) by Aipolabs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "private": true,
   "scripts": {
     "build": "tsc",
     "test": "jest",
