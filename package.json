@@ -9,7 +9,10 @@
     "test": "jest",
     "lint": "eslint . --ext .ts",
     "format": "prettier --write \"src/**/*.ts\"",
-    "prepare": "pnpm run build"
+    "prepare": "pnpm run build",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "changeset publish"
   },
   "keywords": [
     "aci",
@@ -27,6 +30,7 @@
     "access": "public"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.27.1",
     "@jest/globals": "^29.7.0",
     "@types/dotenv": "^8.2.3",
     "@types/jest": "^29.5.12",
