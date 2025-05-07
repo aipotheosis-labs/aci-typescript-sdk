@@ -1,5 +1,5 @@
 {
-  "name": "aci-typescript-sdk-examples",
+  "name": "@aci-sdk/aci-examples",
   "version": "1.0.0",
   "description": "Examples for the ACI TypeScript SDK",
   "private": true,

@@ -8,10 +8,12 @@ import {
   DEFAULT_RETRY_MIN_WAIT,
   DEFAULT_RETRY_MULTIPLIER,
 } from './constants';
-import { AppsResource } from './resource/apps';
-import { AppConfigurationsResource } from './resource/app-configurations';
-import { LinkedAccountsResource } from './resource/linked-accounts';
-import { FunctionsResource } from './resource/functions';
+import {
+  AppsResource,
+  AppConfigurationsResource,
+  LinkedAccountsResource,
+  FunctionsResource,
+} from './resource';
 
 export class ACI {
   private client: AxiosInstance;
@@ -25,10 +27,6 @@ export class ACI {
   constructor(config: ACIConfig) {
     this.config = {
       baseURL: config.baseURL || DEFAULT_BASE_URL,
-      maxRetries: config.maxRetries || DEFAULT_MAX_RETRIES,
-      retryMaxWait: config.retryMaxWait || DEFAULT_RETRY_MAX_WAIT,
-      retryMinWait: config.retryMinWait || DEFAULT_RETRY_MIN_WAIT,
-      retryMultiplier: config.retryMultiplier || DEFAULT_RETRY_MULTIPLIER,
       apiKey: config.apiKey || process.env.ACI_API_KEY || '',
     };
 
@@ -42,7 +40,7 @@ export class ACI {
         'x-api-key': this.config.apiKey,
         'Content-Type': 'application/json',
       },
-      timeout: 10000,
+      timeout: 60000,
     });
 
     this.client.interceptors.request.use((config) => {
@@ -68,11 +66,11 @@ export class ACI {
 
   private setupRetry() {
     const retryConfig: IAxiosRetryConfig = {
-      retries: this.config.maxRetries,
+      retries: DEFAULT_MAX_RETRIES,
       retryDelay: (retryCount: number) => {
         const delay = Math.min(
-          this.config.retryMinWait * Math.pow(this.config.retryMultiplier, retryCount),
-          this.config.retryMaxWait
+          DEFAULT_RETRY_MIN_WAIT * Math.pow(DEFAULT_RETRY_MULTIPLIER, retryCount),
+          DEFAULT_RETRY_MAX_WAIT
         );
         return delay;
       },
