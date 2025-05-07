@@ -13,6 +13,7 @@ import {
   AppConfigurationsResource,
   LinkedAccountsResource,
   FunctionsResource,
+  ProjectsResource,
 } from './resource';
 
 export class ACI {
@@ -23,7 +24,7 @@ export class ACI {
   public readonly appConfigurations: AppConfigurationsResource;
   public readonly linkedAccounts: LinkedAccountsResource;
   public readonly functions: FunctionsResource;
-
+  public readonly projects: ProjectsResource;
   constructor(config: ACIConfig) {
     this.config = {
       baseURL: config.baseURL || DEFAULT_BASE_URL,
@@ -54,6 +55,7 @@ export class ACI {
     this.appConfigurations = new AppConfigurationsResource(this.client);
     this.linkedAccounts = new LinkedAccountsResource(this.client);
     this.functions = new FunctionsResource(this.client);
+    this.projects = new ProjectsResource(this.client);
   }
 
   private setupRetry() {

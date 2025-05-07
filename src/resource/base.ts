@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
+import { z } from 'zod';
 import {
   AuthenticationError,
   PermissionError,
@@ -18,6 +19,17 @@ export class APIResource {
 
   protected handleResponse<T>(response: any): T {
     return response.data;
+  }
+
+  protected validateInput<T, U>(schema: z.ZodType<T>, input: U): T {
+    try {
+      return schema.parse(input);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        throw new ValidationError(`Validation error: ${error.message}`);
+      }
+      throw error;
+    }
   }
 
   protected handleError(error: AxiosError): never {

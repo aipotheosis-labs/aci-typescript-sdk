@@ -1,6 +1,9 @@
 import { ACI } from '../../src/client';
 import dotenv from 'dotenv';
 import { describe, test, expect } from '@jest/globals';
+import { AppsSchema } from '../../src/schemas';
+import { ValidationError } from '../../src/exceptions';
+import axios from 'axios';
 
 dotenv.config();
 
@@ -59,5 +62,36 @@ describe('Apps E2E Tests', () => {
     
     expect(response).toBeDefined();
     expect(response.name).toBe(appName);
+  });
+});
+
+describe('Apps Validation Tests', () => {
+  const client = new ACI({
+    apiKey: TEST_API_KEY || 'dummy_key_for_unit_tests',
+    baseURL: TEST_BASE_URL,
+  });
+
+  // Mock axios to avoid actual API calls
+  jest.spyOn(axios, 'request').mockImplementation(() => 
+    Promise.resolve({ data: [] })
+  );
+
+  test('should validate search params correctly', async () => {
+    // Valid inputs
+    await expect(client.apps.search({
+      intent: 'test',
+      limit: 10,
+      offset: 0
+    })).resolves.not.toThrow();
+
+    // Invalid limit (negative)
+    await expect(client.apps.search({
+      limit: -1
+    })).rejects.toThrow(ValidationError);
+
+    // Invalid offset (negative)
+    await expect(client.apps.search({
+      offset: -1
+    })).rejects.toThrow(ValidationError);
   });
 }); 

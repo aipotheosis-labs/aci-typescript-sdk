@@ -1,7 +1,7 @@
 export enum SecurityScheme {
-  API_KEY = 'API_KEY',
-  OAUTH2 = 'OAUTH2',
-  NO_AUTH = 'NO_AUTH'
+  API_KEY = 'api_key',
+  OAUTH2 = 'oauth2',
+  NO_AUTH = 'no_auth'
 }
 
 export interface AppBasic {

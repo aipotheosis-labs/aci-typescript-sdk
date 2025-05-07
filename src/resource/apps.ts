@@ -1,6 +1,8 @@
 import { AxiosError } from 'axios';
 import { APIResource } from './base';
 import { AppBasic, AppDetails } from '../types/apps';
+import { ValidationError } from '../exceptions';
+import { AppsSchema } from '../schemas';
 
 export class AppsResource extends APIResource {
   async search(params: {
@@ -12,15 +14,20 @@ export class AppsResource extends APIResource {
     offset?: number;
   }): Promise<AppBasic[]> {
     try {
-      const response = await this.client.get('/apps/search', { params });
+      const validatedParams = this.validateInput(AppsSchema.search, params);
+      const response = await this.client.get('/apps/search', { params: validatedParams });
       return this.handleResponse<AppBasic[]>(response);
     } catch (error) {
+      if (error instanceof ValidationError) {
+        throw error;
+      }
       return this.handleError(error as AxiosError);
     }
   }
 
   async get(appName: string): Promise<AppDetails> {
     try {
+      // Simple string parameter - TypeScript provides static checking
       const response = await this.client.get(`/apps/${appName}`);
       return this.handleResponse<AppDetails>(response);
     } catch (error) {

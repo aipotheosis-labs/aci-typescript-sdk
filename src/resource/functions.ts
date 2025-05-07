@@ -1,6 +1,8 @@
 import { AxiosError } from 'axios';
 import { APIResource } from './base';
 import { FunctionExecutionResult, FunctionDefinition, FunctionDefinitionFormat } from '../types/functions';
+import { ValidationError } from '../exceptions';
+import { FunctionsSchema } from '../schemas';
 
 /**
  * Resource class for interacting with ACI Functions API endpoints.
@@ -38,15 +40,21 @@ export class FunctionsResource extends APIResource {
     offset?: number;
   }): Promise<FunctionDefinition[]> {
     try {
+      // Validate params with Zod
+      const validatedParams = this.validateInput(FunctionsSchema.search, params);
+      
       // Create a new params object with the format converted to lowercase
       const apiParams = { 
-        ...params,
-        format: this.formatToLowercase(params.format)
+        ...validatedParams,
+        format: this.formatToLowercase(validatedParams.format)
       };
 
       const response = await this.client.get('/functions/search', { params: apiParams });
       return this.handleResponse<FunctionDefinition[]>(response);
     } catch (error) {
+      if (error instanceof ValidationError) {
+        throw error;
+      }
       return this.handleError(error as AxiosError);
     }
   }
@@ -65,14 +73,23 @@ export class FunctionsResource extends APIResource {
     format: FunctionDefinitionFormat = FunctionDefinitionFormat.OPENAI
   ): Promise<FunctionDefinition> {
     try {
+      // Validate parameters with Zod
+      const validatedParams = this.validateInput(FunctionsSchema.getDefinition, {
+        functionName,
+        format,
+      });
+      
       // Convert the format to lowercase for API compatibility
-      const formatParam = this.formatToLowercase(format);
+      const formatParam = this.formatToLowercase(validatedParams.format);
 
-      const response = await this.client.get(`/functions/${functionName}/definition`, {
+      const response = await this.client.get(`/functions/${validatedParams.functionName}/definition`, {
         params: { format: formatParam },
       });
       return this.handleResponse<FunctionDefinition>(response);
     } catch (error) {
+      if (error instanceof ValidationError) {
+        throw error;
+      }
       return this.handleError(error as AxiosError);
     }
   }
@@ -93,17 +110,23 @@ export class FunctionsResource extends APIResource {
     linked_account_owner_id: string;
   }): Promise<FunctionExecutionResult> {
     try {
+      // Validate params with Zod
+      const validatedParams = this.validateInput(FunctionsSchema.execute, params);
+      
       const requestBody = {
-        function_input: params.function_parameters,
-        linked_account_owner_id: params.linked_account_owner_id
+        function_input: validatedParams.function_parameters,
+        linked_account_owner_id: validatedParams.linked_account_owner_id
       };
       
       const response = await this.client.post(
-        `/functions/${params.function_name}/execute`, 
+        `/functions/${validatedParams.function_name}/execute`, 
         requestBody
       );
       return this.handleResponse<FunctionExecutionResult>(response);
     } catch (error) {
+      if (error instanceof ValidationError) {
+        throw error;
+      }
       return this.handleError(error as AxiosError);
     }
   }
