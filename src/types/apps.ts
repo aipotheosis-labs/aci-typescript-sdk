@@ -1,3 +1,9 @@
+export enum SecurityScheme {
+  API_KEY = 'API_KEY',
+  OAUTH2 = 'OAUTH2',
+  NO_AUTH = 'NO_AUTH'
+}
+
 export interface AppBasic {
   name: string;
   description: string;

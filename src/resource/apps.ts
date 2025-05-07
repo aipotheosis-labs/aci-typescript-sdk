@@ -12,9 +12,7 @@ export class AppsResource extends APIResource {
     offset?: number;
   }): Promise<AppBasic[]> {
     try {
-      console.log('Searching for apps...');
       const response = await this.client.get('/apps/search', { params });
-      console.log(response.data);
       return this.handleResponse<AppBasic[]>(response);
     } catch (error) {
       return this.handleError(error as AxiosError);

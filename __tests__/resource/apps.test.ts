@@ -9,7 +9,7 @@ if (!TEST_API_KEY) {
   throw new Error('TEST_API_KEY environment variable is required');
 }
 
-const API_URL = process.env.TEST_BASE_URL || 'https://api.aci.dev/v1'
+const TEST_BASE_URL = process.env.TEST_BASE_URL || 'https://api.aci.dev/v1'
 
 describe('Apps E2E Tests', () => {
   test.concurrent('should throw error for no API key', async () => {
@@ -21,7 +21,7 @@ describe('Apps E2E Tests', () => {
   test.concurrent('should throw error for invalid API key', async () => {
     const invalidClient = new ACI({
       apiKey: 'invalid_api_key',
-      baseURL: API_URL,
+      baseURL: TEST_BASE_URL,
     });
 
     await expect(
@@ -32,7 +32,7 @@ describe('Apps E2E Tests', () => {
   test.concurrent('should search apps', async () => {
     const client = new ACI({
       apiKey: TEST_API_KEY,
-      baseURL: API_URL,
+      baseURL: TEST_BASE_URL,
     });
 
     const response = await client.apps.search({
@@ -47,7 +47,7 @@ describe('Apps E2E Tests', () => {
   test.concurrent('should get app details', async () => {
     const client = new ACI({
       apiKey: TEST_API_KEY,
-      baseURL: API_URL,
+      baseURL: TEST_BASE_URL,
     });
 
     // First search for an app to get a valid app name

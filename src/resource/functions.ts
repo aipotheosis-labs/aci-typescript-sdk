@@ -1,13 +1,20 @@
 import { AxiosError } from 'axios';
 import { APIResource } from './base';
-import { FunctionExecutionResult, FunctionDefinition } from '../types/functions';
-import { FunctionDefinitionFormat } from '../types/enums';
+import { FunctionExecutionResult, FunctionDefinition, FunctionDefinitionFormat } from '../types/functions';
 
 /**
  * Resource class for interacting with ACI Functions API endpoints.
  * Provides methods for searching, retrieving definitions, and executing functions.
  */
 export class FunctionsResource extends APIResource {
+  /**
+   * Transforms the format enum value to lowercase for API compatibility
+   */
+  private formatToLowercase(format: FunctionDefinitionFormat | undefined): string | undefined {
+    if (!format) return undefined;
+    return format.toLowerCase();
+  }
+
   /**
    * Searches for functions based on specified criteria.
    * TODO: return specific type for returned functions based on FunctionDefinitionFormat
@@ -31,7 +38,13 @@ export class FunctionsResource extends APIResource {
     offset?: number;
   }): Promise<FunctionDefinition[]> {
     try {
-      const response = await this.client.get('/functions/search', { params });
+      // Create a new params object with the format converted to lowercase
+      const apiParams = { 
+        ...params,
+        format: this.formatToLowercase(params.format)
+      };
+
+      const response = await this.client.get('/functions/search', { params: apiParams });
       return this.handleResponse<FunctionDefinition[]>(response);
     } catch (error) {
       return this.handleError(error as AxiosError);
@@ -52,8 +65,11 @@ export class FunctionsResource extends APIResource {
     format: FunctionDefinitionFormat = FunctionDefinitionFormat.OPENAI
   ): Promise<FunctionDefinition> {
     try {
+      // Convert the format to lowercase for API compatibility
+      const formatParam = this.formatToLowercase(format);
+
       const response = await this.client.get(`/functions/${functionName}/definition`, {
-        params: { format },
+        params: { format: formatParam },
       });
       return this.handleResponse<FunctionDefinition>(response);
     } catch (error) {
@@ -77,7 +93,15 @@ export class FunctionsResource extends APIResource {
     linked_account_owner_id: string;
   }): Promise<FunctionExecutionResult> {
     try {
-      const response = await this.client.post('/functions/execute', params);
+      const requestBody = {
+        function_input: params.function_parameters,
+        linked_account_owner_id: params.linked_account_owner_id
+      };
+      
+      const response = await this.client.post(
+        `/functions/${params.function_name}/execute`, 
+        requestBody
+      );
       return this.handleResponse<FunctionExecutionResult>(response);
     } catch (error) {
       return this.handleError(error as AxiosError);

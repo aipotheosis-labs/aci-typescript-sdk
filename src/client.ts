@@ -44,14 +44,6 @@ export class ACI {
     });
 
     this.client.interceptors.request.use((config) => {
-      console.log('Request:', {
-        method: config.method,
-        url: config.url,
-        baseURL: config.baseURL,
-        headers: config.headers,
-        data: config.data,
-        params: config.params,
-      });
       return config;
     });
 
