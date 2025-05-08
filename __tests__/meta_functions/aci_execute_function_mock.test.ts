@@ -92,9 +92,9 @@ describe('ACI_EXECUTE_FUNCTION Meta Function', () => {
       mock.onPost('/functions/calendar_create_event/execute').reply(200, mockResponse);
 
       const linkedAccountOwnerId = 'user-123';
-      const result = await client.handleFunctionCall(
-        'ACI_EXECUTE_FUNCTION',
-        {
+      const result = await client.handleFunctionCall({
+        functionName: 'ACI_EXECUTE_FUNCTION',
+        functionArguments: {
           function_name: 'calendar_create_event',
           function_arguments: {
             title: 'Team Meeting',
@@ -103,7 +103,7 @@ describe('ACI_EXECUTE_FUNCTION Meta Function', () => {
           }
         },
         linkedAccountOwnerId
-      );
+      });
 
       expect(mock.history.post.length).toBe(1);
       expect(mock.history.post[0].url).toBe('/functions/calendar_create_event/execute');
@@ -123,15 +123,15 @@ describe('ACI_EXECUTE_FUNCTION Meta Function', () => {
 
       const linkedAccountOwnerId = 'user-123';
       // Note: function_arguments is not wrapped
-      const result = await client.handleFunctionCall(
-        'ACI_EXECUTE_FUNCTION',
-        {
+      const result = await client.handleFunctionCall({
+        functionName: 'ACI_EXECUTE_FUNCTION',
+        functionArguments: {
           function_name: 'calendar_create_event',
           title: 'Team Meeting',
           start_time: '2023-01-01T10:00:00Z'
         },
         linkedAccountOwnerId
-      );
+      });
 
       expect(mock.history.post.length).toBe(1);
       expect(mock.history.post[0].url).toBe('/functions/calendar_create_event/execute');
@@ -154,14 +154,14 @@ describe('ACI_EXECUTE_FUNCTION Meta Function', () => {
       mock.onPost('/functions/calendar_create_event/execute').reply(200, errorResponse);
 
       const linkedAccountOwnerId = 'user-123';
-      const result = await client.handleFunctionCall(
-        'ACI_EXECUTE_FUNCTION',
-        {
+      const result = await client.handleFunctionCall({
+        functionName: 'ACI_EXECUTE_FUNCTION',
+        functionArguments: {
           function_name: 'calendar_create_event',
           function_arguments: { title: 'Meeting' }
         },
         linkedAccountOwnerId
-      );
+      });
 
       expect(mock.history.post.length).toBe(1);
       expect(result).toEqual(errorResponse);

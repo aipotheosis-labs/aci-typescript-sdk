@@ -62,13 +62,13 @@ describe('AI Integration Tests', () => {
     
     // Step 2: Handle the ACI search function call
     const searchArguments = JSON.parse(searchToolCall.arguments);
-    const searchResults = await aciClient.handleFunctionCall(
-      searchToolCall.name,
-      searchArguments,
-      'test-user-id', // linkedAccountOwnerId
-      false, // allowedAppsOnly
-      FunctionDefinitionFormat.OPENAI_RESPONSES // format
-    );
+    const searchResults = await aciClient.handleFunctionCall({
+      functionName: searchToolCall.name,
+      functionArguments: searchArguments,
+      linkedAccountOwnerId: 'test-user-id',
+      allowedAppsOnly: false,
+      format: FunctionDefinitionFormat.OPENAI_RESPONSES
+    });
     
     // Verify we found the GitHub star repository function
     expect(Array.isArray(searchResults)).toBe(true);
