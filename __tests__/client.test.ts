@@ -1,8 +1,6 @@
-import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { ACI } from '../src/client';
-import { DEFAULT_MAX_RETRIES } from '../src/constants';
-import { UnknownError, RateLimitError, ServerError, ValidationError } from '../src/exceptions';
+import { ValidationError } from '../src/exceptions';
 
 describe('ACI Client', () => {
   let client: ACI;
@@ -39,7 +37,7 @@ describe('ACI Client', () => {
       const searchPromise = client.apps.search({});
       await jest.runAllTimersAsync(); // Ensure timers related to retry delays are processed
       const result = await searchPromise;
-      
+
       expect(mock.history.get.length).toBe(2);
       expect(mock.history.get[0].url).toBe('/apps/search');
       expect(mock.history.get[1].url).toBe('/apps/search');
@@ -59,7 +57,7 @@ describe('ACI Client', () => {
       const searchPromise = client.apps.search({});
       await jest.runAllTimersAsync();
       const result = await searchPromise;
-      
+
       expect(mock.history.get.length).toBe(2);
       expect(mock.history.get[0].url).toBe('/apps/search');
       expect(mock.history.get[1].url).toBe('/apps/search');
@@ -79,7 +77,7 @@ describe('ACI Client', () => {
       const searchPromise = client.apps.search({});
       await jest.runAllTimersAsync();
       const result = await searchPromise;
-      
+
       expect(mock.history.get.length).toBe(2);
       expect(mock.history.get[0].url).toBe('/apps/search');
       expect(mock.history.get[1].url).toBe('/apps/search');
@@ -96,4 +94,4 @@ describe('ACI Client', () => {
       expect(mock.history.get[0].url).toBe('/apps/search');
     });
   });
-}); 
+});

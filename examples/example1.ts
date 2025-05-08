@@ -1,5 +1,5 @@
-import { ACI } from 'aci-typescript-sdk';
-import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
+import { ACI } from '@aci-sdk/aci';
+import { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -15,11 +15,6 @@ async function searchApps() {
   // Initialize the ACI client
   const aci = new ACI({
     apiKey: process.env.ACI_API_KEY || 'your-api-key',
-    // Optional: Configure retry settings
-    maxRetries: 3,
-    retryMinWait: 1000,
-    retryMaxWait: 10000,
-    retryMultiplier: 2,
   });
 
   // Add request interceptor to log requests
@@ -30,7 +25,7 @@ async function searchApps() {
       baseURL: request.baseURL,
       headers: request.headers,
       params: request.params,
-      data: request.data
+      data: request.data,
     });
     return request;
   });
@@ -42,7 +37,7 @@ async function searchApps() {
         status: response.status,
         statusText: response.statusText,
         headers: response.headers,
-        data: response.data
+        data: response.data,
       });
       return response;
     },
@@ -51,7 +46,7 @@ async function searchApps() {
         status: error.response?.status,
         statusText: error.response?.statusText,
         headers: error.response?.headers,
-        data: error.response?.data
+        data: error.response?.data,
       });
       return Promise.reject(error);
     }
@@ -67,7 +62,6 @@ async function searchApps() {
       limit: 5,
     });
     console.log('Found apps:', apps);
-
   } catch (error) {
     console.error('Error:', error);
   }
