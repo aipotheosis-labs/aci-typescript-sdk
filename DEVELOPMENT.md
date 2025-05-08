@@ -29,11 +29,6 @@ cp .env.example .env
 ```
 
 2. Add the following environment variables to your `.env` file:
-```env
-# API Configuration
-ACI_API_KEY=your_api_key_here
-ACI_API_URL=https://api.aipolabs.com/v1  # or your custom API URL
-```
 
 Replace `your_api_key_here` with your actual ACI API key.
 
