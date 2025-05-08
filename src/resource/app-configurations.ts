@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 import { APIResource } from './base';
-import { AppConfiguration } from '../types/app-configurations';
+import { AppConfiguration, AppConfigurationCreate, AppConfigurationsList } from '../types/app-configurations';
 import { SecurityScheme } from '../types/apps';
 import { ValidationError } from '../exceptions';
 import { AppConfigurationsSchema } from '../schemas';
@@ -15,11 +15,7 @@ export class AppConfigurationsResource extends APIResource {
    * @returns A promise that resolves to an array of app configurations.
    * @throws {ValidationError} If the input parameters are invalid.
    */
-  async list(params: {
-    app_names?: string[];
-    limit?: number;
-    offset?: number;
-  }): Promise<AppConfiguration[]> {
+  async list(params: AppConfigurationsList = {}): Promise<AppConfiguration[]> {
     try {
       const validatedParams = this.validateInput(AppConfigurationsSchema.list, params);
       const response = await this.client.get('/app-configurations', {
@@ -55,18 +51,18 @@ export class AppConfigurationsResource extends APIResource {
 
   /**
    * Creates a new app configuration.
-   * @param appName - The name of the application for which to create the configuration.
-   * @param securityScheme - The security scheme for the app configuration.
+   * @param params - The configuration parameters.
+   * @param params.app_name - The name of the application.
+   * @param params.security_scheme - The security scheme for the app configuration.
+   * @param params.security_scheme_overrides - Optional overrides for the security scheme.
+   * @param params.all_functions_enabled - Whether all functions are enabled by default.
+   * @param params.enabled_functions - List of specifically enabled functions.
    * @returns A promise that resolves to the created app configuration.
    * @throws {ValidationError} If the input parameters are invalid.
    */
-  async create(appName: string, securityScheme: SecurityScheme): Promise<AppConfiguration> {
+  async create(params: AppConfigurationCreate): Promise<AppConfiguration> {
     try {
-      const validatedData = this.validateInput(AppConfigurationsSchema.create, {
-        app_name: appName,
-        security_scheme: securityScheme,
-      });
-
+      const validatedData = this.validateInput(AppConfigurationsSchema.create, params);
       const response = await this.client.post('/app-configurations', validatedData);
       return this.handleResponse<AppConfiguration>(response);
     } catch (error) {

@@ -4,3 +4,6 @@ export const DEFAULT_RETRY_MIN_WAIT = 1000; // 1 second
 export const DEFAULT_RETRY_MULTIPLIER = 2;
 export const DEFAULT_BASE_URL = 'https://api.aci.dev/v1/';
 export const DEFAULT_AFTER_OAUTH2_FLOW_REDIRECT_URL = 'https://platform.aci.dev';
+
+export const ACI_SEARCH_FUNCTIONS = 'ACI_SEARCH_FUNCTIONS';
+export const ACI_EXECUTE_FUNCTION = 'ACI_EXECUTE_FUNCTION';

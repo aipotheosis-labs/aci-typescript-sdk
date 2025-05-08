@@ -7,17 +7,17 @@ import { describe, it, expect } from '@jest/globals';
 dotenv.config();
 
 // Get API key and test configuration
-const TEST_API_KEY = process.env.TEST_API_KEY;
+const TEST_ACI_API_KEY = process.env.TEST_ACI_API_KEY;
 const TEST_BASE_URL = process.env.TEST_BASE_URL || 'https://api.aci.dev/v1';
 const TEST_TIMEOUT = 30000; // 30 seconds timeout
 
-if (!TEST_API_KEY) {
-  throw new Error('TEST_API_KEY environment variable is required');
+if (!TEST_ACI_API_KEY) {
+  throw new Error('TEST_ACI_API_KEY environment variable is required');
 }
 
 describe('Apps E2E Tests', () => {
   const client = new ACI({
-    apiKey: TEST_API_KEY,
+    apiKey: TEST_ACI_API_KEY,
     baseURL: TEST_BASE_URL,
   });
 
@@ -70,7 +70,7 @@ describe('Apps E2E Tests', () => {
 describe('Apps Validation Tests', () => {
   it.concurrent('should validate search params correctly', async () => {
     const client = new ACI({
-      apiKey: TEST_API_KEY || 'dummy_key_for_unit_tests',
+      apiKey: TEST_ACI_API_KEY || 'dummy_key_for_unit_tests',
       baseURL: TEST_BASE_URL,
     });
     // Valid inputs

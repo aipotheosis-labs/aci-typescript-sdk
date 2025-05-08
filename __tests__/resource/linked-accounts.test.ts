@@ -9,13 +9,13 @@ import { v4 as uuidv4 } from 'uuid';
 dotenv.config();
 
 // Get API key and test configuration
-const TEST_API_KEY = process.env.TEST_API_KEY || 'test-api-key';
+const TEST_ACI_API_KEY = process.env.TEST_ACI_API_KEY || 'test-api-key';
 const TEST_BASE_URL = process.env.TEST_BASE_URL || 'https://api.aci.dev/v1';
 const TEST_OWNER_ID = `test-user-${uuidv4()}`; // Test user ID to use across tests
 const TEST_TIMEOUT = 30000; // 30 seconds timeout
 
-if (!TEST_API_KEY || TEST_API_KEY === 'test-api-key') {
-  console.warn('TEST_API_KEY environment variable not set or using default value');
+if (!TEST_ACI_API_KEY || TEST_ACI_API_KEY === 'test-api-key') {
+  console.warn('TEST_ACI_API_KEY environment variable not set or using default value');
 }
 
 describe('LinkedAccounts integration tests', () => {
@@ -25,12 +25,12 @@ describe('LinkedAccounts integration tests', () => {
   const API_KEY_APP_NAME = 'BRAVE_SEARCH';
 
   beforeAll(() => {
-    if (!TEST_API_KEY) {
-      throw new Error('TEST_API_KEY environment variable is required');
+    if (!TEST_ACI_API_KEY) {
+      throw new Error('TEST_ACI_API_KEY environment variable is required');
     }
 
     aci = new ACI({
-      apiKey: TEST_API_KEY,
+      apiKey: TEST_ACI_API_KEY,
       baseURL: TEST_BASE_URL,
     });
   });

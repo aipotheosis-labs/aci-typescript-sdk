@@ -7,18 +7,18 @@ import { describe, it, expect } from '@jest/globals';
 dotenv.config();
 
 // Get API key and test configuration
-const TEST_API_KEY = process.env.TEST_API_KEY;
+const TEST_ACI_API_KEY = process.env.TEST_ACI_API_KEY;
 const TEST_BASE_URL = process.env.TEST_BASE_URL || 'https://api.aci.dev/v1';
 const TEST_APP_NAME = 'AIRTABLE';
 const TEST_TIMEOUT = 30000; // 30 seconds timeout
 
-if (!TEST_API_KEY) {
-  throw new Error('TEST_API_KEY environment variable is required');
+if (!TEST_ACI_API_KEY) {
+  throw new Error('TEST_ACI_API_KEY environment variable is required');
 }
 
 describe('AppConfigurations E2E Tests', () => {
   const client = new ACI({
-    apiKey: TEST_API_KEY,
+    apiKey: TEST_ACI_API_KEY,
     baseURL: TEST_BASE_URL,
   });
 
@@ -63,10 +63,10 @@ describe('AppConfigurations E2E Tests', () => {
       }
 
       // Create a new app configuration
-      const newConfig = await client.appConfigurations.create(
-        TEST_APP_NAME,
-        SecurityScheme.API_KEY
-      );
+      const newConfig = await client.appConfigurations.create({
+        app_name: TEST_APP_NAME,
+        security_scheme: SecurityScheme.API_KEY
+      });
       expect(newConfig).toBeDefined();
       expect(newConfig.app_name).toBe(TEST_APP_NAME);
 
@@ -84,10 +84,10 @@ describe('AppConfigurations E2E Tests', () => {
       expect(deletedConfig).toBeNull();
 
       // Create again to leave it in a known state
-      const recreatedConfig = await client.appConfigurations.create(
-        TEST_APP_NAME,
-        SecurityScheme.API_KEY
-      );
+      const recreatedConfig = await client.appConfigurations.create({
+        app_name: TEST_APP_NAME,
+        security_scheme: SecurityScheme.API_KEY
+      });
       expect(recreatedConfig).toBeDefined();
       expect(recreatedConfig.app_name).toBe(TEST_APP_NAME);
     },
