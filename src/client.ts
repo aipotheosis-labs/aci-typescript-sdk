@@ -18,6 +18,14 @@ import {
 } from './resource';
 import { FunctionDefinitionFormat, FunctionExecutionResult } from './types/functions';
 
+interface HandleFunctionCallParams {
+  functionName: string;
+  functionArguments: Record<string, any>;
+  linkedAccountOwnerId?: string;
+  allowedAppsOnly?: boolean;
+  format?: FunctionDefinitionFormat;
+}
+
 export class ACI {
   private client: AxiosInstance;
   private config: Required<ACIConfig>;
@@ -97,13 +105,8 @@ export class ACI {
    * @param format - Format of the function definition (for ACI_SEARCH_FUNCTIONS)
    * @returns The result of the function execution (varies based on the function)
    */
-  public async handleFunctionCall(
-    functionName: string,
-    functionArguments: Record<string, any>,
-    linkedAccountOwnerId: string,
-    allowedAppsOnly: boolean = false,
-    format: FunctionDefinitionFormat = FunctionDefinitionFormat.OPENAI
-  ): Promise<any> {
+  public async handleFunctionCall(params: HandleFunctionCallParams): Promise<any> {
+    const { functionName, functionArguments, linkedAccountOwnerId, allowedAppsOnly, format } = params;
 
     if (functionName === ACI_SEARCH_FUNCTIONS) {
       const functions = await this.functions.search({
@@ -129,7 +132,7 @@ export class ACI {
       const result = await this.functions.execute({
         function_name: processedArgs.function_name,
         function_parameters: processedArgs.function_arguments,
-        linked_account_owner_id: linkedAccountOwnerId,
+        linked_account_owner_id: linkedAccountOwnerId as string,
       });
 
       // Return result directly
@@ -139,7 +142,7 @@ export class ACI {
       const result = await this.functions.execute({
         function_name: functionName,
         function_parameters: functionArguments,
-        linked_account_owner_id: linkedAccountOwnerId,
+        linked_account_owner_id: linkedAccountOwnerId as string,
       });
 
       // Return result directly

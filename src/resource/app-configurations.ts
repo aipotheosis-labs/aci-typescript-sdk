@@ -1,9 +1,12 @@
-import { AxiosError } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 import { APIResource } from './base';
 import { AppConfiguration, AppConfigurationCreate, AppConfigurationsList } from '../types/app-configurations';
 import { SecurityScheme } from '../types/apps';
 import { ValidationError } from '../exceptions';
 import { AppConfigurationsSchema } from '../schemas';
+
+type AppConfigurationResponse = AxiosResponse<AppConfiguration>;
+type AppConfigurationsResponse = AxiosResponse<AppConfiguration[]>;
 
 export class AppConfigurationsResource extends APIResource {
   /**
@@ -18,10 +21,10 @@ export class AppConfigurationsResource extends APIResource {
   async list(params: AppConfigurationsList = {}): Promise<AppConfiguration[]> {
     try {
       const validatedParams = this.validateInput(AppConfigurationsSchema.list, params);
-      const response = await this.client.get('/app-configurations', {
+      const response = await this.client.get<AppConfiguration[]>('/app-configurations', {
         params: validatedParams,
       });
-      return this.handleResponse<AppConfiguration[]>(response);
+      return this.handleResponse(response);
     } catch (error) {
       if (error instanceof ValidationError) {
         throw error;
@@ -37,11 +40,9 @@ export class AppConfigurationsResource extends APIResource {
    */
   async get(appName: string): Promise<AppConfiguration | null> {
     try {
-      // No need to validate simple string parameters that TypeScript already checks
-      const response = await this.client.get(`/app-configurations/${appName}`);
-      return this.handleResponse<AppConfiguration>(response);
+      const response = await this.client.get<AppConfiguration>(`/app-configurations/${appName}`);
+      return this.handleResponse(response);
     } catch (error) {
-      // Return null if the configuration doesn't exist
       if (error instanceof AxiosError && error.response?.status === 404) {
         return null;
       }
@@ -63,8 +64,8 @@ export class AppConfigurationsResource extends APIResource {
   async create(params: AppConfigurationCreate): Promise<AppConfiguration> {
     try {
       const validatedData = this.validateInput(AppConfigurationsSchema.create, params);
-      const response = await this.client.post('/app-configurations', validatedData);
-      return this.handleResponse<AppConfiguration>(response);
+      const response = await this.client.post<AppConfiguration>('/app-configurations', validatedData);
+      return this.handleResponse(response);
     } catch (error) {
       if (error instanceof ValidationError) {
         throw error;
@@ -80,7 +81,6 @@ export class AppConfigurationsResource extends APIResource {
    */
   async delete(appName: string): Promise<boolean> {
     try {
-      // No need to validate simple string parameters that TypeScript already checks
       await this.client.delete(`/app-configurations/${appName}`);
       return true;
     } catch (error) {

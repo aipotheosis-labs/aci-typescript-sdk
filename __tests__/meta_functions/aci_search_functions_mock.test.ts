@@ -58,11 +58,12 @@ describe('ACI_SEARCH_FUNCTIONS Meta Function', () => {
       mock.onGet('/functions/search').reply(200, mockResponse);
 
       const linkedAccountOwnerId = 'user-123';
-      const result = await client.handleFunctionCall(
-        'ACI_SEARCH_FUNCTIONS',
-        { intent: 'test search', limit: 10, offset: 0 },
-        linkedAccountOwnerId
-      );
+      const result = await client.handleFunctionCall({
+        functionName: 'ACI_SEARCH_FUNCTIONS',
+        functionArguments: { intent: 'test search', limit: 10, offset: 0 },
+        linkedAccountOwnerId,
+        format: FunctionDefinitionFormat.OPENAI
+      });
 
       expect(mock.history.get.length).toBe(1);
       expect(mock.history.get[0].url).toBe('/functions/search');
@@ -70,7 +71,7 @@ describe('ACI_SEARCH_FUNCTIONS Meta Function', () => {
         intent: 'test search',
         limit: 10,
         offset: 0,
-        allowed_apps_only: false,
+        allowed_apps_only: undefined,
         format: 'openai'
       });
       expect(result).toEqual(mockResponse);
@@ -80,11 +81,11 @@ describe('ACI_SEARCH_FUNCTIONS Meta Function', () => {
       mock.onGet('/functions/search').reply(200, mockResponse);
 
       const linkedAccountOwnerId = 'user-123';
-      const result = await client.handleFunctionCall(
-        'ACI_SEARCH_FUNCTIONS',
-        { intent: 'find calendar functions' },
+      const result = await client.handleFunctionCall({
+        functionName: 'ACI_SEARCH_FUNCTIONS',
+        functionArguments: { intent: 'find calendar functions' },
         linkedAccountOwnerId
-      );
+      });
 
       expect(mock.history.get.length).toBe(1);
       expect(mock.history.get[0].params).toHaveProperty('intent', 'find calendar functions');
@@ -95,12 +96,12 @@ describe('ACI_SEARCH_FUNCTIONS Meta Function', () => {
       mock.onGet('/functions/search').reply(200, mockResponse);
 
       const linkedAccountOwnerId = 'user-123';
-      const result = await client.handleFunctionCall(
-        'ACI_SEARCH_FUNCTIONS',
-        { intent: 'test search' },
+      const result = await client.handleFunctionCall({
+        functionName: 'ACI_SEARCH_FUNCTIONS',
+        functionArguments: { intent: 'test search' },
         linkedAccountOwnerId,
-        true // allowedAppsOnly = true
-      );
+        allowedAppsOnly: true
+      });
 
       expect(mock.history.get.length).toBe(1);
       expect(mock.history.get[0].params).toHaveProperty('allowed_apps_only', true);

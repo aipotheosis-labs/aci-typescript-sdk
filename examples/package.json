@@ -4,8 +4,8 @@
   "description": "Examples for the ACI TypeScript SDK",
   "private": true,
   "scripts": {
-    "start": "pnpm tsx example1.ts",
-    "dev": "pnpm tsx watch example1.ts"
+    "start": "pnpm tsx basic-usage.ts",
+    "dev": "pnpm tsx watch basic-usage.ts"
   },
   "dependencies": {
     "@types/dotenv": "^8.2.3",
