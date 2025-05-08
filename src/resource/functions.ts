@@ -1,6 +1,10 @@
 import { AxiosError } from 'axios';
 import { APIResource } from './base';
-import { FunctionExecutionResult, FunctionDefinition, FunctionDefinitionFormat } from '../types/functions';
+import {
+  FunctionExecutionResult,
+  FunctionDefinition,
+  FunctionDefinitionFormat,
+} from '../types/functions';
 import { ValidationError } from '../exceptions';
 import { FunctionsSchema } from '../schemas';
 
@@ -20,7 +24,7 @@ export class FunctionsResource extends APIResource {
   /**
    * Searches for functions based on specified criteria.
    * TODO: return specific type for returned functions based on FunctionDefinitionFormat
-   * 
+   *
    * @param params - Search parameters
    * @param params.app_names - List of app names to filter functions by
    * @param params.intent - Search results will be sorted by relevance to this intent
@@ -42,14 +46,16 @@ export class FunctionsResource extends APIResource {
     try {
       // Validate params with Zod
       const validatedParams = this.validateInput(FunctionsSchema.search, params);
-      
+
       // Create a new params object with the format converted to lowercase
-      const apiParams = { 
+      const apiParams = {
         ...validatedParams,
-        format: this.formatToLowercase(validatedParams.format)
+        format: this.formatToLowercase(validatedParams.format),
       };
 
-      const response = await this.client.get('/functions/search', { params: apiParams });
+      const response = await this.client.get('/functions/search', {
+        params: apiParams,
+      });
       return this.handleResponse<FunctionDefinition[]>(response);
     } catch (error) {
       if (error instanceof ValidationError) {
@@ -62,7 +68,7 @@ export class FunctionsResource extends APIResource {
   /**
    * Retrieves the definition of a specific function.
    * TODO: return specific type for returned function definition based on FunctionDefinitionFormat
-   * 
+   *
    * @param functionName - Name of the function to retrieve
    * @param format - Format of the function definition to return
    * @returns Promise resolving to the function definition
@@ -78,13 +84,16 @@ export class FunctionsResource extends APIResource {
         functionName,
         format,
       });
-      
+
       // Convert the format to lowercase for API compatibility
       const formatParam = this.formatToLowercase(validatedParams.format);
 
-      const response = await this.client.get(`/functions/${validatedParams.functionName}/definition`, {
-        params: { format: formatParam },
-      });
+      const response = await this.client.get(
+        `/functions/${validatedParams.functionName}/definition`,
+        {
+          params: { format: formatParam },
+        }
+      );
       return this.handleResponse<FunctionDefinition>(response);
     } catch (error) {
       if (error instanceof ValidationError) {
@@ -96,7 +105,7 @@ export class FunctionsResource extends APIResource {
 
   /**
    * Executes an ACI indexed function (tool) with the provided arguments.
-   * 
+   *
    * @param params - Execution parameters
    * @param params.function_name - Name of the function to execute
    * @param params.function_parameters - Dictionary containing the input arguments for the function
@@ -106,20 +115,20 @@ export class FunctionsResource extends APIResource {
    */
   async execute(params: {
     function_name: string;
-    function_parameters: Record<string, any>;
+    function_parameters: Record<string, object>;
     linked_account_owner_id: string;
   }): Promise<FunctionExecutionResult> {
     try {
       // Validate params with Zod
       const validatedParams = this.validateInput(FunctionsSchema.execute, params);
-      
+
       const requestBody = {
         function_input: validatedParams.function_parameters,
-        linked_account_owner_id: validatedParams.linked_account_owner_id
+        linked_account_owner_id: validatedParams.linked_account_owner_id,
       };
-      
+
       const response = await this.client.post(
-        `/functions/${validatedParams.function_name}/execute`, 
+        `/functions/${validatedParams.function_name}/execute`,
         requestBody
       );
       return this.handleResponse<FunctionExecutionResult>(response);
@@ -130,4 +139,4 @@ export class FunctionsResource extends APIResource {
       return this.handleError(error as AxiosError);
     }
   }
-} 
+}

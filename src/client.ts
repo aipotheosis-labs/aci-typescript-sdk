@@ -13,7 +13,6 @@ import {
   AppConfigurationsResource,
   LinkedAccountsResource,
   FunctionsResource,
-  ProjectsResource,
 } from './resource';
 
 export class ACI {
@@ -24,7 +23,6 @@ export class ACI {
   public readonly appConfigurations: AppConfigurationsResource;
   public readonly linkedAccounts: LinkedAccountsResource;
   public readonly functions: FunctionsResource;
-  public readonly projects: ProjectsResource;
   constructor(config: ACIConfig) {
     this.config = {
       baseURL: config.baseURL || DEFAULT_BASE_URL,
@@ -32,7 +30,9 @@ export class ACI {
     };
 
     if (!this.config.apiKey) {
-      throw new Error('API key is required. Either pass it in config or set ACI_API_KEY environment variable.');
+      throw new Error(
+        'API key is required. Either pass it in config or set ACI_API_KEY environment variable.'
+      );
     }
 
     this.client = axios.create({
@@ -44,7 +44,7 @@ export class ACI {
       timeout: 60000,
     });
 
-    this.client.interceptors.request.use((config) => {
+    this.client.interceptors.request.use(config => {
       return config;
     });
 
@@ -55,7 +55,6 @@ export class ACI {
     this.appConfigurations = new AppConfigurationsResource(this.client);
     this.linkedAccounts = new LinkedAccountsResource(this.client);
     this.functions = new FunctionsResource(this.client);
-    this.projects = new ProjectsResource(this.client);
   }
 
   private setupRetry() {
@@ -68,7 +67,7 @@ export class ACI {
         );
         return delay;
       },
-      retryCondition: (error) => {
+      retryCondition: error => {
         const status = error.response?.status;
         return (
           axiosRetry.isNetworkOrIdempotentRequestError(error) ||
@@ -80,4 +79,4 @@ export class ACI {
 
     axiosRetry(this.client, retryConfig);
   }
-} 
+}

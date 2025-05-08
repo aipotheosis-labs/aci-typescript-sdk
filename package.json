@@ -8,7 +8,7 @@
     "build": "tsc",
     "test": "jest",
     "lint": "eslint . --ext .ts",
-    "format": "prettier --write \"src/**/*.ts\"",
+    "format": "prettier --write \"src/**/*.ts\" \"__tests__/**/*.ts\" \"examples/**/*.ts\"",
     "prepare": "pnpm run build",
     "changeset": "changeset",
     "version": "changeset version",

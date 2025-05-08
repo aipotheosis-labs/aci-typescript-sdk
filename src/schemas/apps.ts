@@ -10,4 +10,4 @@ export const AppsSchema = {
     limit: z.number().int().positive().optional(),
     offset: z.number().int().nonnegative().optional(),
   }),
-}; 
+};

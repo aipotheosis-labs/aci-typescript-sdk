@@ -11,4 +11,4 @@ export class NotFoundError extends ACIError {}
 export class ValidationError extends ACIError {}
 export class RateLimitError extends ACIError {}
 export class ServerError extends ACIError {}
-export class UnknownError extends ACIError {} 
+export class UnknownError extends ACIError {}

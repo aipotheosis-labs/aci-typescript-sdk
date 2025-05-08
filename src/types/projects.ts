@@ -12,4 +12,4 @@ export interface UpdateAgentAllowedAppsRequest {
 export interface ProjectAgentResponse {
   id: string;
   allowed_apps: AllowedApp[];
-} 
+}

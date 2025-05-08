@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@types/dotenv": "^8.2.3",
-    "aci-typescript-sdk": "file:..",
+    "@aci-sdk/aci": "file:../",
     "dotenv": "^16.5.0"
   },
   "devDependencies": {

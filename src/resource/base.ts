@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosError } from 'axios';
+import { AxiosInstance, AxiosError, AxiosResponse } from 'axios';
 import { z } from 'zod';
 import {
   AuthenticationError,
@@ -17,7 +17,7 @@ export class APIResource {
     this.client = client;
   }
 
-  protected handleResponse<T>(response: any): T {
+  protected handleResponse<T>(response: AxiosResponse<T>): T {
     return response.data;
   }
 
@@ -64,9 +64,10 @@ export class APIResource {
   private getErrorMessage(error: AxiosError): string {
     if (error.response?.data) {
       try {
-        const data = typeof error.response.data === 'string' 
-          ? JSON.parse(error.response.data) 
-          : error.response.data;
+        const data =
+          typeof error.response.data === 'string'
+            ? JSON.parse(error.response.data)
+            : error.response.data;
         return data.message || data.error || JSON.stringify(data);
       } catch {
         return error.response.data.toString();
@@ -74,4 +75,4 @@ export class APIResource {
     }
     return error.message;
   }
-} 
+}

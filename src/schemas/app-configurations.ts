@@ -7,9 +7,9 @@ export const AppConfigurationsSchema = {
     limit: z.number().optional(),
     offset: z.number().optional(),
   }),
-  
+
   create: z.object({
     app_name: z.string(),
     security_scheme: z.nativeEnum(SecurityScheme),
-  })
-}; 
+  }),
+};

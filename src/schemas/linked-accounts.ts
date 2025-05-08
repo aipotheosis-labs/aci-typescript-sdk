@@ -9,9 +9,9 @@ export const LinkedAccountsSchema = {
     api_key: z.string().optional(),
     after_oauth2_link_redirect_url: z.string().optional(),
   }),
-  
+
   list: z.object({
     app_name: z.string().optional(),
     linked_account_owner_id: z.string().optional(),
-  })
-}; 
+  }),
+};

@@ -13,7 +13,10 @@ export const FunctionsSchema = {
 
   getDefinition: z.object({
     functionName: z.string(),
-    format: z.nativeEnum(FunctionDefinitionFormat).optional().default(FunctionDefinitionFormat.OPENAI),
+    format: z
+      .nativeEnum(FunctionDefinitionFormat)
+      .optional()
+      .default(FunctionDefinitionFormat.OPENAI),
   }),
 
   execute: z.object({
@@ -21,4 +24,4 @@ export const FunctionsSchema = {
     function_parameters: z.record(z.any()),
     linked_account_owner_id: z.string(),
   }),
-}; 
+};
