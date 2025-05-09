@@ -8,7 +8,8 @@
     "dev": "pnpm tsx watch basic-usage.ts",
     "openai:static": "pnpm tsx openai-static-tool.ts",
     "openai:dynamic": "pnpm tsx openai-dynamic-tool.ts",
-    "ai-sdk": "pnpm tsx ai-sdk.ts"
+    "ai-sdk": "pnpm tsx ai-sdk.ts",
+    "schema": "pnpm tsx schema.ts"
   },
   "dependencies": {
     "@aci-sdk/aci": "file:../",

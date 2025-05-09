@@ -48,6 +48,7 @@ export interface LinkedAccount {
   /** Last update timestamp */
   updated_at: string;
   /** Additional properties */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }
 

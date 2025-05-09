@@ -11,26 +11,28 @@ import { BaseSchema, createSchemaFormatter } from './base';
  * Schema definition for the ACI_SEARCH_FUNCTIONS meta function
  */
 const aciSearchFunctionsBaseSchema: BaseSchema = {
-  name: "ACI_SEARCH_FUNCTIONS",
-  description: "This function allows you to find relevant executable functions and their schemas that can help complete your tasks.",
+  name: 'ACI_SEARCH_FUNCTIONS',
+  description:
+    'This function allows you to find relevant executable functions and their schemas that can help complete your tasks.',
   parameters: {
-    type: "object",
+    type: 'object',
     properties: {
       intent: {
-        type: "string",
-        description: "Use this to find relevant functions you might need. Returned results will be sorted by relevance to the intent.",
+        type: 'string',
+        description:
+          'Use this to find relevant functions you might need. Returned results will be sorted by relevance to the intent.',
       },
       limit: {
-        type: "integer",
+        type: 'integer',
         default: 100,
-        description: "The maximum number of functions to return from the search per response.",
+        description: 'The maximum number of functions to return from the search per response.',
         minimum: 1,
       },
       offset: {
-        type: "integer",
+        type: 'integer',
         default: 0,
         minimum: 0,
-        description: "Pagination offset.",
+        description: 'Pagination offset.',
       },
     },
     required: [],

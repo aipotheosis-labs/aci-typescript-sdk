@@ -115,7 +115,7 @@ export class FunctionsResource extends APIResource {
    */
   async execute(params: {
     function_name: string;
-    function_parameters: Record<string, object>;
+    function_parameters: Record<string, any>;
     linked_account_owner_id: string;
   }): Promise<FunctionExecutionResult> {
     try {

@@ -1,9 +1,6 @@
 import OpenAI from 'openai';
 import { ACI } from '../src/client';
-import { 
-  ACISearchFunctions, 
-  ACIExecuteFunction 
-} from '../src/meta_functions';
+import { ACISearchFunctions, ACIExecuteFunction } from '../src/meta_functions';
 import { FunctionDefinitionFormat } from '../src/types/functions';
 import dotenv from 'dotenv';
 
@@ -12,10 +9,10 @@ dotenv.config();
 
 async function main() {
   // Initialize clients
-  const aciClient = new ACI({ 
-    apiKey: process.env.ACI_API_KEY as string
+  const aciClient = new ACI({
+    apiKey: process.env.ACI_API_KEY as string,
   });
-  
+
   const openaiClient = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY as string,
   });
@@ -24,7 +21,7 @@ async function main() {
   const aciSearchFunctionsSchema = ACISearchFunctions.toJsonSchema(
     FunctionDefinitionFormat.OPENAI_RESPONSES
   );
-  
+
   const aciExecuteFunctionSchema = ACIExecuteFunction.toJsonSchema(
     FunctionDefinitionFormat.OPENAI_RESPONSES
   );
@@ -38,7 +35,7 @@ async function main() {
     you can use ACI_EXECUTE_FUNCTION to execute the function provided you have the correct input arguments.
 `;
 
-  const userMessage = "Can you star aipotheosis-labs/aci github repo?"
+  const userMessage = 'Can you star aipotheosis-labs/aci github repo?';
 
   // Step 1: Search for relevant functions
   const searchResponse = await openaiClient.responses.create({
@@ -46,20 +43,18 @@ async function main() {
     input: [
       {
         role: 'system',
-        content: systemPrompt
+        content: systemPrompt,
       },
       {
         role: 'user',
-        content: userMessage
-      }
+        content: userMessage,
+      },
     ],
-    tools: [aciSearchFunctionsSchema, aciExecuteFunctionSchema] as any
+    tools: [aciSearchFunctionsSchema, aciExecuteFunctionSchema] as any,
   });
 
   // Find the first function call in the response
-  const searchToolCall = searchResponse.output.find(
-    (item: any) => item.type === 'function_call'
-  );
+  const searchToolCall = searchResponse.output.find((item: any) => item.type === 'function_call');
 
   if (!searchToolCall || searchToolCall.type !== 'function_call') {
     throw new Error('No tool call returned from OpenAI');
@@ -72,7 +67,7 @@ async function main() {
     functionArguments: searchArguments,
     linkedAccountOwnerId: 'your-user-id', // Replace with actual user ID
     allowedAppsOnly: false,
-    format: FunctionDefinitionFormat.OPENAI_RESPONSES
+    format: FunctionDefinitionFormat.OPENAI_RESPONSES,
   });
 
   // Step 3: Execute the found function
@@ -81,28 +76,26 @@ async function main() {
     input: [
       {
         role: 'system',
-        content: systemPrompt
+        content: systemPrompt,
       },
       {
         role: 'user',
-        content: userMessage
+        content: userMessage,
       },
       {
-        ...searchToolCall
+        ...searchToolCall,
       },
       {
-        type: "function_call_output",
+        type: 'function_call_output',
         call_id: searchToolCall.call_id,
-        "output": JSON.stringify(searchResults)
+        output: JSON.stringify(searchResults),
       },
     ],
-    tools: [aciSearchFunctionsSchema, aciExecuteFunctionSchema] as any
+    tools: [aciSearchFunctionsSchema, aciExecuteFunctionSchema] as any,
   } as any);
 
   // Extract the execution tool call
-  const executeToolCall = executeResponse.output.find(
-    (item: any) => item.type === 'function_call'
-  );
+  const executeToolCall = executeResponse.output.find((item: any) => item.type === 'function_call');
 
   if (!executeToolCall || executeToolCall.type !== 'function_call') {
     throw new Error('No execution tool call returned from OpenAI');
@@ -115,7 +108,7 @@ async function main() {
     functionArguments: executeArguments,
     linkedAccountOwnerId: process.env.LINKED_ACCOUNT_OWNER_ID as string,
     allowedAppsOnly: false,
-    format: FunctionDefinitionFormat.OPENAI_RESPONSES
+    format: FunctionDefinitionFormat.OPENAI_RESPONSES,
   });
 
   console.log('Execution result:', executionResult);

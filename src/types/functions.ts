@@ -1,6 +1,6 @@
 export interface FunctionExecutionResult {
   success: boolean;
-  data?: object;
+  data?: any;
   error?: string;
 }
 
@@ -14,7 +14,7 @@ export enum FunctionDefinitionFormat {
 export interface BasicFunctionDefinition {
   name: string;
   description: string;
-  parameters: Record<string, object>;
+  parameters: Record<string, any>;
 }
 
 export interface OpenAIFunctionDefinition {
@@ -22,7 +22,7 @@ export interface OpenAIFunctionDefinition {
   function: {
     name: string;
     description: string;
-    parameters: Record<string, object>;
+    parameters: Record<string, any>;
   };
 }
 
@@ -30,13 +30,13 @@ export interface OpenAIResponsesFunctionDefinition {
   type: string;
   name: string;
   description: string;
-  parameters: Record<string, object>;
+  parameters: Record<string, any>;
 }
 
 export interface AnthropicFunctionDefinition {
   name: string;
   description: string;
-  input_schema: Record<string, object>;
+  input_schema: Record<string, any>;
 }
 
 export type FunctionDefinition =

@@ -65,7 +65,7 @@ describe('AppConfigurations E2E Tests', () => {
       // Create a new app configuration
       const newConfig = await client.appConfigurations.create({
         app_name: TEST_APP_NAME,
-        security_scheme: SecurityScheme.API_KEY
+        security_scheme: SecurityScheme.API_KEY,
       });
       expect(newConfig).toBeDefined();
       expect(newConfig.app_name).toBe(TEST_APP_NAME);
@@ -86,7 +86,7 @@ describe('AppConfigurations E2E Tests', () => {
       // Create again to leave it in a known state
       const recreatedConfig = await client.appConfigurations.create({
         app_name: TEST_APP_NAME,
-        security_scheme: SecurityScheme.API_KEY
+        security_scheme: SecurityScheme.API_KEY,
       });
       expect(recreatedConfig).toBeDefined();
       expect(recreatedConfig.app_name).toBe(TEST_APP_NAME);
