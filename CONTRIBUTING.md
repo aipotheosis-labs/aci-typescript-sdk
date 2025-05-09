@@ -30,7 +30,6 @@ cp .env.example .env
 
 2. Add the following environment variables to your `.env` file:
 
-Replace `your_api_key_here` with your actual ACI API key.
 
 ## Development
 
@@ -50,6 +49,7 @@ This will compile the TypeScript code into JavaScript in the `dist` directory.
 > - ARXIV
 > - BRAVE_SEARCH
 > - GITHUB
+> We might need to change test logic so you don't need to do this in the future.
 
 The project uses Jest for testing. To run the tests:
 ```bash 
@@ -58,7 +58,7 @@ pnpm test
 
 To run tests in watch mode during development:
 ```bash
-pnpm test -- --watch
+pnpm runtest
 ```
 
 ### Code Quality
@@ -78,6 +78,8 @@ pnpm run format
 ## Project Structure
 
 ```
+__tests__/            # Test files
+examples/             # Examples
 src/
 ├── index.ts           # Main entry point
 ├── client.ts          # API client implementation
@@ -92,21 +94,10 @@ src/
 ## Publishing
 
 The project uses Changesets for versioning and publishing. To create a new version:
+You need change the version in the `package.json` then commit and push to the main branch.
+The CI will build the project and publish the new version to npm.
 
-1. Create a changeset:
-```bash
-pnpm run changeset
-```
 
-2. Update the version:
-```bash
-pnpm run version
-```
-
-3. Publish to npm:
-```bash
-pnpm run release
-```
 
 ## Contributing
 
@@ -114,7 +105,3 @@ pnpm run release
 2. Make your changes
 3. Run tests and ensure they pass
 4. Submit a pull request
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.

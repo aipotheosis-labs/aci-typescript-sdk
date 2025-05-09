@@ -1,9 +1,9 @@
 import { FunctionDefinitionFormat } from '../../src/types/functions';
-import { 
-  ACIExecuteFunction, 
-  getAciExecuteFunctionSchema, 
-  wrapFunctionArgumentsIfNotPresent 
-} from '../../src/meta_functions/aci_execute_function';
+import {
+  ACIExecuteFunction,
+  getAciExecuteFunctionSchema,
+  wrapFunctionArgumentsIfNotPresent,
+} from '../../src/meta_functions/aci-execute-function';
 import { ACI } from '../../src/client';
 import MockAdapter from 'axios-mock-adapter';
 
@@ -55,7 +55,7 @@ describe('ACI_EXECUTE_FUNCTION Meta Function', () => {
       const input = {
         function_name: 'calendar_create_event',
         title: 'Meeting',
-        start_time: '2023-01-01T10:00:00Z'
+        start_time: '2023-01-01T10:00:00Z',
       };
 
       const result = wrapFunctionArgumentsIfNotPresent(input);
@@ -63,8 +63,8 @@ describe('ACI_EXECUTE_FUNCTION Meta Function', () => {
         function_name: 'calendar_create_event',
         function_arguments: {
           title: 'Meeting',
-          start_time: '2023-01-01T10:00:00Z'
-        }
+          start_time: '2023-01-01T10:00:00Z',
+        },
       });
     });
 
@@ -73,8 +73,8 @@ describe('ACI_EXECUTE_FUNCTION Meta Function', () => {
         function_name: 'calendar_create_event',
         function_arguments: {
           title: 'Meeting',
-          start_time: '2023-01-01T10:00:00Z'
-        }
+          start_time: '2023-01-01T10:00:00Z',
+        },
       };
 
       const result = wrapFunctionArgumentsIfNotPresent(input);
@@ -85,7 +85,7 @@ describe('ACI_EXECUTE_FUNCTION Meta Function', () => {
   describe('Integration with client', () => {
     const mockResponse = {
       success: true,
-      data: { id: '123', title: 'Meeting' }
+      data: { id: '123', title: 'Meeting' },
     };
 
     it('should call the execute endpoint with the correct parameters', async () => {
@@ -99,10 +99,10 @@ describe('ACI_EXECUTE_FUNCTION Meta Function', () => {
           function_arguments: {
             title: 'Team Meeting',
             start_time: '2023-01-01T10:00:00Z',
-            end_time: '2023-01-01T11:00:00Z'
-          }
+            end_time: '2023-01-01T11:00:00Z',
+          },
         },
-        linkedAccountOwnerId
+        linkedAccountOwnerId,
       });
 
       expect(mock.history.post.length).toBe(1);
@@ -111,9 +111,9 @@ describe('ACI_EXECUTE_FUNCTION Meta Function', () => {
         function_input: {
           title: 'Team Meeting',
           start_time: '2023-01-01T10:00:00Z',
-          end_time: '2023-01-01T11:00:00Z'
+          end_time: '2023-01-01T11:00:00Z',
         },
-        linked_account_owner_id: linkedAccountOwnerId
+        linked_account_owner_id: linkedAccountOwnerId,
       });
       expect(result).toEqual(mockResponse);
     });
@@ -128,9 +128,9 @@ describe('ACI_EXECUTE_FUNCTION Meta Function', () => {
         functionArguments: {
           function_name: 'calendar_create_event',
           title: 'Team Meeting',
-          start_time: '2023-01-01T10:00:00Z'
+          start_time: '2023-01-01T10:00:00Z',
         },
-        linkedAccountOwnerId
+        linkedAccountOwnerId,
       });
 
       expect(mock.history.post.length).toBe(1);
@@ -138,9 +138,9 @@ describe('ACI_EXECUTE_FUNCTION Meta Function', () => {
       expect(JSON.parse(mock.history.post[0].data)).toEqual({
         function_input: {
           title: 'Team Meeting',
-          start_time: '2023-01-01T10:00:00Z'
+          start_time: '2023-01-01T10:00:00Z',
         },
-        linked_account_owner_id: linkedAccountOwnerId
+        linked_account_owner_id: linkedAccountOwnerId,
       });
       expect(result).toEqual(mockResponse);
     });
@@ -148,7 +148,7 @@ describe('ACI_EXECUTE_FUNCTION Meta Function', () => {
     it('should handle function execution errors', async () => {
       const errorResponse = {
         success: false,
-        error: 'Invalid parameters'
+        error: 'Invalid parameters',
       };
 
       mock.onPost('/functions/calendar_create_event/execute').reply(200, errorResponse);
@@ -158,13 +158,13 @@ describe('ACI_EXECUTE_FUNCTION Meta Function', () => {
         functionName: 'ACI_EXECUTE_FUNCTION',
         functionArguments: {
           function_name: 'calendar_create_event',
-          function_arguments: { title: 'Meeting' }
+          function_arguments: { title: 'Meeting' },
         },
-        linkedAccountOwnerId
+        linkedAccountOwnerId,
       });
 
       expect(mock.history.post.length).toBe(1);
       expect(result).toEqual(errorResponse);
     });
   });
-}); 
+});

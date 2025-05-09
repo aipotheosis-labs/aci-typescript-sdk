@@ -16,7 +16,7 @@ import {
   LinkedAccountsResource,
   FunctionsResource,
 } from './resource';
-import { FunctionDefinitionFormat, FunctionExecutionResult } from './types/functions';
+import { FunctionDefinitionFormat } from './types/functions';
 
 interface HandleFunctionCallParams {
   functionName: string;
@@ -106,7 +106,8 @@ export class ACI {
    * @returns The result of the function execution (varies based on the function)
    */
   public async handleFunctionCall(params: HandleFunctionCallParams): Promise<any> {
-    const { functionName, functionArguments, linkedAccountOwnerId, allowedAppsOnly, format } = params;
+    const { functionName, functionArguments, linkedAccountOwnerId, allowedAppsOnly, format } =
+      params;
 
     if (functionName === ACI_SEARCH_FUNCTIONS) {
       const functions = await this.functions.search({
@@ -119,7 +120,7 @@ export class ACI {
     } else if (functionName === ACI_EXECUTE_FUNCTION) {
       // Handle special case where function arguments might not be wrapped correctly
       let processedArgs = functionArguments;
-      
+
       // If function_arguments is missing but function_name is present, wrap the arguments
       if (!('function_arguments' in functionArguments) && 'function_name' in functionArguments) {
         const { function_name, ...rest } = functionArguments;

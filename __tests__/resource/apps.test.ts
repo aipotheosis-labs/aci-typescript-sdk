@@ -2,7 +2,7 @@ import { ACI } from '../../src/client';
 import { ValidationError } from '../../src/exceptions';
 import dotenv from 'dotenv';
 import { describe, it, expect } from '@jest/globals';
-
+import { AppBasic, AppDetails } from '../../src/types/apps';
 // Load environment variables
 dotenv.config();
 
@@ -39,7 +39,7 @@ describe('Apps E2E Tests', () => {
   it(
     'should search apps',
     async () => {
-      const response = await client.apps.search({
+      const response: AppBasic[] = await client.apps.search({
         limit: 10,
         offset: 0,
       });
@@ -54,11 +54,18 @@ describe('Apps E2E Tests', () => {
     'should get app details',
     async () => {
       // First search for an app to get a valid app name
-      const apps = await client.apps.search({ limit: 1 });
+      const apps: AppBasic[] = await client.apps.search({
+        intent: 'I want to search the web',
+        allowed_apps_only: false,
+        include_functions: false,
+        categories: ['search'],
+        limit: 10,
+        offset: 0,
+      });
       expect(apps.length).toBeGreaterThan(0);
 
       const appName = apps[0].name;
-      const response = await client.apps.get(appName);
+      const response: AppDetails = await client.apps.get(appName);
 
       expect(response).toBeDefined();
       expect(response.name).toBe(appName);

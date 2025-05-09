@@ -14,19 +14,19 @@ if (!LINKED_ACCOUNT_OWNER_ID) {
 
 async function main() {
   // Initialize clients
-  const aciClient = new ACI({ 
-    apiKey: process.env.ACI_API_KEY as string
+  const aciClient = new ACI({
+    apiKey: process.env.ACI_API_KEY as string,
   });
-  
+
   const openaiClient = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY as string,
   });
 
   // Get Brave Search function definition in OpenAI format
-  const braveSearchFunctionDefinition = await aciClient.functions.getDefinition(
-    'BRAVE_SEARCH__WEB_SEARCH', 
+  const braveSearchFunctionDefinition = (await aciClient.functions.getDefinition(
+    'BRAVE_SEARCH__WEB_SEARCH',
     FunctionDefinitionFormat.OPENAI_RESPONSES
-  ) as OpenAIResponsesFunctionDefinition
+  )) as OpenAIResponsesFunctionDefinition;
 
   console.log('Brave search function definition:');
   console.log(braveSearchFunctionDefinition);
@@ -62,13 +62,12 @@ async function main() {
       functionArguments: JSON.parse(toolCall.arguments),
       linkedAccountOwnerId: LINKED_ACCOUNT_OWNER_ID,
       allowedAppsOnly: true,
-      format: FunctionDefinitionFormat.OPENAI_RESPONSES
+      format: FunctionDefinitionFormat.OPENAI_RESPONSES,
     });
 
     console.log('ACI Function Call Result1:');
     console.log(JSON.stringify(result1, null, 2));
 
-    
     // Alternatively, because this is a direct function execution you can use:
     // you just need one way to execute the function
     // const result2 = await aciClient.functions.execute({
@@ -76,7 +75,6 @@ async function main() {
     //   function_parameters: JSON.parse(toolCall.arguments),
     //   linked_account_owner_id: LINKED_ACCOUNT_OWNER_ID as string
     // });
-    
 
     // console.log('ACI Function Call Result2:');
     // console.log(JSON.stringify(result2, null, 2));
@@ -84,4 +82,4 @@ async function main() {
 }
 
 // Run the example
-main().catch(console.error); 
+main().catch(console.error);

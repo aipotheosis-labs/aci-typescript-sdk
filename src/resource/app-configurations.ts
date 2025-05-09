@@ -1,12 +1,12 @@
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosError } from 'axios';
 import { APIResource } from './base';
-import { AppConfiguration, AppConfigurationCreate, AppConfigurationsList } from '../types/app-configurations';
-import { SecurityScheme } from '../types/apps';
+import {
+  AppConfiguration,
+  AppConfigurationCreate,
+  AppConfigurationsList,
+} from '../types/app-configurations';
 import { ValidationError } from '../exceptions';
 import { AppConfigurationsSchema } from '../schemas';
-
-type AppConfigurationResponse = AxiosResponse<AppConfiguration>;
-type AppConfigurationsResponse = AxiosResponse<AppConfiguration[]>;
 
 export class AppConfigurationsResource extends APIResource {
   /**
@@ -64,7 +64,10 @@ export class AppConfigurationsResource extends APIResource {
   async create(params: AppConfigurationCreate): Promise<AppConfiguration> {
     try {
       const validatedData = this.validateInput(AppConfigurationsSchema.create, params);
-      const response = await this.client.post<AppConfiguration>('/app-configurations', validatedData);
+      const response = await this.client.post<AppConfiguration>(
+        '/app-configurations',
+        validatedData
+      );
       return this.handleResponse(response);
     } catch (error) {
       if (error instanceof ValidationError) {

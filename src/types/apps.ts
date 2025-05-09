@@ -1,4 +1,4 @@
-import { Function, FunctionDetails } from './functions';
+import { Function as AppFunction, FunctionDetails } from './functions';
 export enum SecurityScheme {
   API_KEY = 'api_key',
   OAUTH2 = 'oauth2',
@@ -8,7 +8,7 @@ export enum SecurityScheme {
 export interface AppBasic {
   name: string;
   description: string;
-  functions?: Function[];
+  functions?: AppFunction[];
 }
 
 export interface AppDetails {

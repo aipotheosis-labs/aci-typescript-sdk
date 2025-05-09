@@ -10,13 +10,14 @@ export interface AppConfiguration {
   enabled_functions: string[];
   created_at: string;
   updated_at: string;
-  [key: string]: any; // Allow extra fields for backward compatibility
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 }
 
 export interface AppConfigurationCreate {
   app_name: string;
   security_scheme: SecurityScheme;
-  security_scheme_overrides?: Record<string, any>;
+  security_scheme_overrides?: object;
   all_functions_enabled?: boolean;
   enabled_functions?: string[];
 }

@@ -1,5 +1,8 @@
 import { FunctionDefinitionFormat } from '../../src/types/functions';
-import { ACISearchFunctions, getAciSearchFunctionsSchema } from '../../src/meta_functions/aci_search_functions';
+import {
+  ACISearchFunctions,
+  getAciSearchFunctionsSchema,
+} from '../../src/meta_functions/aci-search-functions';
 import { ACI } from '../../src/client';
 import MockAdapter from 'axios-mock-adapter';
 
@@ -21,7 +24,9 @@ describe('ACI_SEARCH_FUNCTIONS Meta Function', () => {
     it('should have the correct name and description', () => {
       const schema = getAciSearchFunctionsSchema();
       expect(schema.name).toBe('ACI_SEARCH_FUNCTIONS');
-      expect(schema.description).toContain('This function allows you to find relevant executable functions');
+      expect(schema.description).toContain(
+        'This function allows you to find relevant executable functions'
+      );
     });
 
     it('should have the required properties', () => {
@@ -50,8 +55,8 @@ describe('ACI_SEARCH_FUNCTIONS Meta Function', () => {
       {
         name: 'test_function',
         description: 'A test function',
-        parameters: { type: 'object', properties: {} }
-      }
+        parameters: { type: 'object', properties: {} },
+      },
     ];
 
     it('should call the search endpoint with the correct parameters', async () => {
@@ -62,7 +67,7 @@ describe('ACI_SEARCH_FUNCTIONS Meta Function', () => {
         functionName: 'ACI_SEARCH_FUNCTIONS',
         functionArguments: { intent: 'test search', limit: 10, offset: 0 },
         linkedAccountOwnerId,
-        format: FunctionDefinitionFormat.OPENAI
+        format: FunctionDefinitionFormat.OPENAI,
       });
 
       expect(mock.history.get.length).toBe(1);
@@ -72,7 +77,7 @@ describe('ACI_SEARCH_FUNCTIONS Meta Function', () => {
         limit: 10,
         offset: 0,
         allowed_apps_only: undefined,
-        format: 'openai'
+        format: 'openai',
       });
       expect(result).toEqual(mockResponse);
     });
@@ -84,7 +89,7 @@ describe('ACI_SEARCH_FUNCTIONS Meta Function', () => {
       const result = await client.handleFunctionCall({
         functionName: 'ACI_SEARCH_FUNCTIONS',
         functionArguments: { intent: 'find calendar functions' },
-        linkedAccountOwnerId
+        linkedAccountOwnerId,
       });
 
       expect(mock.history.get.length).toBe(1);
@@ -100,7 +105,7 @@ describe('ACI_SEARCH_FUNCTIONS Meta Function', () => {
         functionName: 'ACI_SEARCH_FUNCTIONS',
         functionArguments: { intent: 'test search' },
         linkedAccountOwnerId,
-        allowedAppsOnly: true
+        allowedAppsOnly: true,
       });
 
       expect(mock.history.get.length).toBe(1);
@@ -108,4 +113,4 @@ describe('ACI_SEARCH_FUNCTIONS Meta Function', () => {
       expect(result).toEqual(mockResponse);
     });
   });
-}); 
+});
