@@ -1,6 +1,6 @@
 {
   "name": "@aci-sdk/aci",
-  "version": "0.1.5-beta",
+  "version": "0.1.6-beta",
   "description": "TypeScript SDK for ACI (Agent-Computer Interface) by Aipolabs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
