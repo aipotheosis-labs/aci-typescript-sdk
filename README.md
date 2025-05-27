@@ -6,6 +6,8 @@ The official TypeScript SDK for the ACI (Agent-Computer Interface) by Aipolabs. 
 
 The ACI TypeScript SDK provides convenient access to the ACI REST API from any TypeScript/JavaScript application.
 
+> Note: This SDK is intended for use in Node.js environments only.
+
 ## Documentation
 The detailed documentation is available [here](https://aci.dev/docs).
 
