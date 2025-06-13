@@ -47,6 +47,13 @@ export interface LinkedAccount {
   created_at: string;
   /** Last update timestamp */
   updated_at: string;
+  /** Security credentials for the linked account */
+  security_credentials?: {
+    /** Access token for OAuth2 authentication */
+    access_token?: string;
+    /** Secret key for API key authentication */
+    secret_key?: string;
+  };
   /** Additional properties */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
