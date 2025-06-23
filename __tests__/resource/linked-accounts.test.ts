@@ -161,4 +161,61 @@ describe('LinkedAccounts integration tests', () => {
     },
     TEST_TIMEOUT
   );
+
+  describe('get method with different security schemes', () => {
+    const testCases = [
+      {
+        securityScheme: SecurityScheme.OAUTH2,
+        mockCredentials: { access_token: 'test-oauth2-token' },
+        appName: OAUTH2_APP_NAME,
+      },
+      {
+        securityScheme: SecurityScheme.API_KEY,
+        mockCredentials: { secret_key: 'test-api-key' },
+        appName: API_KEY_APP_NAME,
+      },
+      {
+        securityScheme: SecurityScheme.NO_AUTH,
+        mockCredentials: {},
+        appName: NO_AUTH_APP_NAME,
+      },
+    ];
+
+    testCases.forEach(({ securityScheme, mockCredentials, appName }) => {
+      it(`should handle ${securityScheme} security scheme correctly`, async () => {
+        // Link account with the specified security scheme
+        const linkParams = {
+          app_name: appName,
+          linked_account_owner_id: TEST_OWNER_ID,
+          security_scheme: securityScheme,
+          ...(securityScheme === SecurityScheme.API_KEY
+            ? { api_key: mockCredentials.secret_key }
+            : {}),
+        };
+
+        const linkedAccount = (await aci.linkedAccounts.link(linkParams)) as LinkedAccount;
+
+        // Get the linked account
+        const retrievedAccount = await aci.linkedAccounts.get(linkedAccount.id);
+
+        // Verify the account details
+        expect(retrievedAccount.id).toBe(linkedAccount.id);
+        expect(retrievedAccount.app_name).toBe(appName);
+        expect(retrievedAccount.linked_account_owner_id).toBe(TEST_OWNER_ID);
+        expect(retrievedAccount.security_scheme).toBe(securityScheme);
+
+        // Verify security credentials based on scheme
+        if (securityScheme === SecurityScheme.OAUTH2) {
+          expect(retrievedAccount.security_credentials?.access_token).toBeDefined();
+        } else if (securityScheme === SecurityScheme.API_KEY) {
+          expect(retrievedAccount.security_credentials?.secret_key).toBeDefined();
+        } else {
+          expect(retrievedAccount.security_credentials).toBeUndefined();
+        }
+
+        // Clean up
+        await aci.linkedAccounts.delete(retrievedAccount.id);
+      });
+    });
+  });
 });
