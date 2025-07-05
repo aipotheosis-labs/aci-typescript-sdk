@@ -91,29 +91,16 @@ export class LinkedAccountsResource extends APIResource {
    * Retrieve a specific linked account.
    *
    * @param linkedAccountId ID of the linked account to retrieve.
-   * @returns The linked account with security credentials if available.
+   * @returns The linked account with security credentials if oauth2
    */
   async get(linkedAccountId: string): Promise<LinkedAccount> {
     try {
       const response = await this.client.get(`/linked-accounts/${linkedAccountId}`);
       const linkedAccount = this.handleResponse<LinkedAccount>(response);
-
-      // Ensure security credentials are properly typed
-      if (linkedAccount.security_credentials) {
-        if (linkedAccount.security_scheme === SecurityScheme.OAUTH2) {
-          linkedAccount.security_credentials = {
-            access_token: linkedAccount.security_credentials.access_token,
-          };
-        } else if (linkedAccount.security_scheme === SecurityScheme.API_KEY) {
-          linkedAccount.security_credentials = {
-            secret_key: linkedAccount.security_credentials.secret_key,
-          };
-        } else {
-          // For NO_AUTH, we don't expect any security credentials
-          linkedAccount.security_credentials = undefined;
-        }
+      // if not oauth2 set security_credentials to undefined
+      if (linkedAccount.security_scheme !== SecurityScheme.OAUTH2) {
+        linkedAccount.security_credentials = undefined;
       }
-
       return linkedAccount;
     } catch (error) {
       return this.handleError(error as AxiosError);

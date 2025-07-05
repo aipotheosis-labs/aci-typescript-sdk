@@ -166,7 +166,7 @@ describe('LinkedAccounts integration tests', () => {
     const testCases = [
       {
         securityScheme: SecurityScheme.OAUTH2,
-        mockCredentials: { access_token: 'test-oauth2-token' },
+        mockCredentials: { access_token: 'test-oauth2-token', expires_at: 1715136000, refresh_token: 'test-refresh-token' },
         appName: OAUTH2_APP_NAME,
       },
       {
@@ -206,9 +206,7 @@ describe('LinkedAccounts integration tests', () => {
 
         // Verify security credentials based on scheme
         if (securityScheme === SecurityScheme.OAUTH2) {
-          expect(retrievedAccount.security_credentials?.access_token).toBeDefined();
-        } else if (securityScheme === SecurityScheme.API_KEY) {
-          expect(retrievedAccount.security_credentials?.secret_key).toBeDefined();
+          expect(retrievedAccount.security_credentials).toBeDefined();
         } else {
           expect(retrievedAccount.security_credentials).toBeUndefined();
         }
