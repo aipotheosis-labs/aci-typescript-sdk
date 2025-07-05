@@ -14,9 +14,4 @@ export const LinkedAccountsSchema = {
     app_name: z.string().optional(),
     linked_account_owner_id: z.string().optional(),
   }),
-
-  security_credentials: z.object({
-    access_token: z.string().optional(),
-    secret_key: z.string().optional(),
-  }),
 };

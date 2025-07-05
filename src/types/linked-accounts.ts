@@ -39,7 +39,7 @@ export interface LinkedAccount {
   app_name: string;
   /** ID of the account owner */
   linked_account_owner_id: string;
-  /** Security scheme used for authentication */
+  /** Security scheme for the linked account */
   security_scheme: SecurityScheme;
   /** Whether the linked account is enabled */
   enabled: boolean;
@@ -49,10 +49,10 @@ export interface LinkedAccount {
   updated_at: string;
   /** Security credentials for the linked account */
   security_credentials?: {
-    /** Access token for OAuth2 authentication */
-    access_token?: string;
-    /** Secret key for API key authentication */
-    secret_key?: string;
+    /** Oauth2 credentials for OAuth2 account */
+    access_token: string;
+    expires_at?: number;
+    refresh_token?: string;
   };
   /** Additional properties */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
