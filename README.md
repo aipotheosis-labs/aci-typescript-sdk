@@ -230,7 +230,6 @@ const searchResults = await client.handleFunctionCall({
   functionName: 'ACI_SEARCH_FUNCTIONS',
   functionArguments: {
     intent: "I want to star a GitHub repository",
-    allowed_apps_only: false,
     limit: 10
   },
   linkedAccountOwnerId: 'user123',
@@ -249,7 +248,6 @@ if (searchResults.length > 0) {
       }
     },
     linkedAccountOwnerId: 'user123',
-    allowedAppsOnly: false,
     format: FunctionDefinitionFormat.OPENAI_RESPONSES
   });
 }
