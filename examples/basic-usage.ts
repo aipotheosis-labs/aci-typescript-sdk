@@ -111,7 +111,7 @@ async function main() {
     console.log('\nSearching functions with OPENAI_RESPONSES format...');
     const searchResults = await client.functions.search({
       intent: 'I want to search the web',
-      allowed_apps_only: false,
+      allowed_only: false,
       limit: 5,
       format: FunctionDefinitionFormat.OPENAI_RESPONSES,
     });

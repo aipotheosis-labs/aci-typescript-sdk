@@ -5,7 +5,7 @@ export const FunctionsSchema = {
   search: z.object({
     app_names: z.array(z.string()).optional(),
     intent: z.string().optional(),
-    allowed_apps_only: z.boolean().optional(),
+    allowed_only: z.boolean().optional(),
     format: z.nativeEnum(FunctionDefinitionFormat).optional(),
     limit: z.number().int().positive().optional(),
     offset: z.number().int().nonnegative().optional(),

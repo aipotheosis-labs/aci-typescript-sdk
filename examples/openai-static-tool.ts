@@ -61,7 +61,7 @@ async function main() {
       functionName: toolCall.name,
       functionArguments: JSON.parse(toolCall.arguments),
       linkedAccountOwnerId: LINKED_ACCOUNT_OWNER_ID,
-      allowedAppsOnly: true,
+      allowedOnly: true,
       format: FunctionDefinitionFormat.OPENAI_RESPONSES,
     });
 

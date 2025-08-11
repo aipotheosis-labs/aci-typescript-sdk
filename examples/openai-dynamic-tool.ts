@@ -66,7 +66,7 @@ async function main() {
     functionName: searchToolCall.name,
     functionArguments: searchArguments,
     linkedAccountOwnerId: 'your-user-id', // Replace with actual user ID
-    allowedAppsOnly: false,
+    allowedOnly: false,
     format: FunctionDefinitionFormat.OPENAI_RESPONSES,
   });
 
@@ -107,7 +107,7 @@ async function main() {
     functionName: executeToolCall.name,
     functionArguments: executeArguments,
     linkedAccountOwnerId: process.env.LINKED_ACCOUNT_OWNER_ID as string,
-    allowedAppsOnly: false,
+    allowedOnly: false,
     format: FunctionDefinitionFormat.OPENAI_RESPONSES,
   });
 

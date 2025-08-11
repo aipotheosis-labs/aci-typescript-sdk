@@ -19,10 +19,15 @@ import {
 import { FunctionDefinitionFormat } from './types/functions';
 
 interface HandleFunctionCallParams {
+  /** Name of the function to be called */
   functionName: string;
+  /** Object containing the input arguments for the function */
   functionArguments: Record<string, any>;
+  /** Specifies the end-user (account owner) on behalf of whom to execute functions */
   linkedAccountOwnerId?: string;
-  allowedAppsOnly?: boolean;
+  /** If true, only returns enabled functions from apps that are allowed by the agent/accessor */
+  allowedOnly?: boolean;
+  /** Format of the function definition (for ACI_SEARCH_FUNCTIONS) */
   format?: FunctionDefinitionFormat;
 }
 
@@ -101,18 +106,23 @@ export class ACI {
    * @param functionName - Name of the function to be called
    * @param functionArguments - Object containing the input arguments for the function
    * @param linkedAccountOwnerId - Specifies the end-user (account owner) on behalf of whom to execute functions
-   * @param allowedAppsOnly - If true, only returns functions/apps that are allowed to be used by the agent/accessor
+   * @param allowedOnly - If true, only returns enabled functions from apps that are allowed to be used by the agent/accessor
    * @param format - Format of the function definition (for ACI_SEARCH_FUNCTIONS)
    * @returns The result of the function execution (varies based on the function)
    */
   public async handleFunctionCall(params: HandleFunctionCallParams): Promise<any> {
-    const { functionName, functionArguments, linkedAccountOwnerId, allowedAppsOnly, format } =
-      params;
+    const {
+      functionName,
+      functionArguments,
+      linkedAccountOwnerId,
+      allowedOnly,
+      format,
+    } = params;
 
     if (functionName === ACI_SEARCH_FUNCTIONS) {
       const functions = await this.functions.search({
         ...functionArguments,
-        allowed_apps_only: allowedAppsOnly,
+        allowed_only: allowedOnly,
         format: format,
       });
 

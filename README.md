@@ -175,7 +175,7 @@ import { FunctionDefinitionFormat } from '@aci-sdk/aci';
 const functions = await client.functions.search({
   app_names: ["BRAVE_SEARCH", "TAVILY"],
   intent: "I want to search the web",
-  allowed_apps_only: false, // If true, only returns functions of apps that are allowed by the agent/accessor, identified by the api key.
+  allowed_only: false, // If true, only returns the enabled functions of apps that are allowed by the agent/accessor, identified by the api key.
   format: FunctionDefinitionFormat.OPENAI, // The format of the functions, can be OPENAI, ANTHROPIC, BASIC (name and description only)
   limit: 10,
   offset: 0
@@ -233,7 +233,7 @@ const searchResults = await client.handleFunctionCall({
     limit: 10
   },
   linkedAccountOwnerId: 'user123',
-  allowedAppsOnly: false,
+  allowedOnly: false,
   format: FunctionDefinitionFormat.OPENAI_RESPONSES
 });
 

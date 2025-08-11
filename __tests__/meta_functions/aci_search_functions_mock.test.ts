@@ -76,7 +76,7 @@ describe('ACI_SEARCH_FUNCTIONS Meta Function', () => {
         intent: 'test search',
         limit: 10,
         offset: 0,
-        allowed_apps_only: undefined,
+        allowed_only: undefined,
         format: 'openai',
       });
       expect(result).toEqual(mockResponse);
@@ -97,7 +97,7 @@ describe('ACI_SEARCH_FUNCTIONS Meta Function', () => {
       expect(result).toEqual(mockResponse);
     });
 
-    it('should pass along the allowed_apps_only flag', async () => {
+    it('should pass along the allowed_only flag', async () => {
       mock.onGet('/functions/search').reply(200, mockResponse);
 
       const linkedAccountOwnerId = 'user-123';
@@ -105,11 +105,11 @@ describe('ACI_SEARCH_FUNCTIONS Meta Function', () => {
         functionName: 'ACI_SEARCH_FUNCTIONS',
         functionArguments: { intent: 'test search' },
         linkedAccountOwnerId,
-        allowedAppsOnly: true,
+        allowedOnly: true,
       });
 
       expect(mock.history.get.length).toBe(1);
-      expect(mock.history.get[0].params).toHaveProperty('allowed_apps_only', true);
+      expect(mock.history.get[0].params).toHaveProperty('allowed_only', true);
       expect(result).toEqual(mockResponse);
     });
   });
