@@ -115,7 +115,7 @@ export class ACI {
     if (functionName === ACI_SEARCH_FUNCTIONS) {
       const functions = await this.functions.search({
         ...functionArguments,
-        allowed_only: allowedOnly || allowedAppsOnly,
+        allowed_only: allowedOnly ?? allowedAppsOnly,
         format: format,
       });
 
