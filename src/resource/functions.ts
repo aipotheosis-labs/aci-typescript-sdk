@@ -35,10 +35,13 @@ export class FunctionsResource extends APIResource {
       // Validate params with Zod
       const validatedParams = this.validateInput(FunctionsSchema.search, params);
 
+      const { allowed_only, allowed_apps_only, format, ...rest } = validatedParams;
+
       // Create a new params object with the format converted to lowercase
       const apiParams = {
-        ...validatedParams,
-        format: this.formatToLowercase(validatedParams.format),
+        ...rest,
+        allowed_only: allowed_only ?? allowed_apps_only,
+        format: this.formatToLowercase(format),
       };
 
       const response = await this.client.get('/functions/search', {
