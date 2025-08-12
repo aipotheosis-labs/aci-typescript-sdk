@@ -63,7 +63,7 @@ describe('AI Integration Tests', () => {
       functionName: searchToolCall.name,
       functionArguments: searchArguments,
       linkedAccountOwnerId: 'test-user-id',
-      allowedAppsOnly: false,
+      allowedOnly: false,
       format: FunctionDefinitionFormat.OPENAI_RESPONSES,
     });
 
