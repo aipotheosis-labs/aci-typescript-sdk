@@ -66,8 +66,10 @@ export interface SearchFunctionsParams {
   app_names?: string[];
   /** Intent to search for relevant functions */
   intent?: string;
-  /** If true, only returns functions/apps that are allowed to be used by the agent/accessor */
+  /** @deprecated Use allowed_only instead. If true, only returns enabled functions of apps that are allowed to be used by the agent/accessor */
   allowed_apps_only?: boolean;
+  /** If true, only returns enabled functions of apps that are allowed to be used by the agent/accessor. If false, returns all functions of all apps. */
+  allowed_only?: boolean;
   /** Format of the function definition to return */
   format?: FunctionDefinitionFormat;
   /** Maximum number of functions to return */

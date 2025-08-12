@@ -233,7 +233,7 @@ const searchResults = await client.handleFunctionCall({
     limit: 10
   },
   linkedAccountOwnerId: 'user123',
-  allowedAppsOnly: false,
+  allowedOnly: false,
   format: FunctionDefinitionFormat.OPENAI_RESPONSES
 });
 

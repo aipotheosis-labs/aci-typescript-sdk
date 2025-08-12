@@ -105,7 +105,7 @@ describe('ACI_SEARCH_FUNCTIONS Meta Function', () => {
         functionName: 'ACI_SEARCH_FUNCTIONS',
         functionArguments: { intent: 'test search' },
         linkedAccountOwnerId,
-        allowedAppsOnly: true,
+        allowedOnly: true,
       });
 
       expect(mock.history.get.length).toBe(1);

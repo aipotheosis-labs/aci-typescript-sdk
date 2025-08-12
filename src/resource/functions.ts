@@ -4,6 +4,7 @@ import {
   FunctionExecutionResult,
   FunctionDefinition,
   FunctionDefinitionFormat,
+  SearchFunctionsParams,
 } from '../types/functions';
 import { ValidationError } from '../exceptions';
 import { FunctionsSchema } from '../schemas';
@@ -25,24 +26,11 @@ export class FunctionsResource extends APIResource {
    * Searches for functions based on specified criteria.
    * TODO: return specific type for returned functions based on FunctionDefinitionFormat
    *
-   * @param params - Search parameters
-   * @param params.app_names - List of app names to filter functions by
-   * @param params.intent - Search results will be sorted by relevance to this intent
-   * @param params.allowed_apps_only - If true, only returns functions of apps that are allowed by the agent/accessor
-   * @param params.format - Format of the function definitions to return
-   * @param params.limit - For pagination, maximum number of functions to return
-   * @param params.offset - For pagination, number of functions to skip before returning results
+   * @param {SearchFunctionsParams} params
    * @returns Promise resolving to an array of function definitions matching the search criteria
    * @throws Various exceptions for different HTTP status codes
    */
-  async search(params: {
-    app_names?: string[];
-    intent?: string;
-    allowed_apps_only?: boolean;
-    format?: FunctionDefinitionFormat;
-    limit?: number;
-    offset?: number;
-  }): Promise<FunctionDefinition[]> {
+  async search(params: SearchFunctionsParams): Promise<FunctionDefinition[]> {
     try {
       // Validate params with Zod
       const validatedParams = this.validateInput(FunctionsSchema.search, params);
