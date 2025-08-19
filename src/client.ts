@@ -19,10 +19,17 @@ import {
 import { FunctionDefinitionFormat } from './types/functions';
 
 interface HandleFunctionCallParams {
+  /** Name of the function to be called */
   functionName: string;
+  /** Dictionary containing all input arguments required to execute the specified function */
   functionArguments: Record<string, any>;
+  /** Specifies with credentials of which linked account the function should be executed */
   linkedAccountOwnerId?: string;
+  /** @deprecated Use allowedOnly instead. If true, only returns enabled functions of apps that are allowed to be used by the agent/accessor */
   allowedAppsOnly?: boolean;
+  /** If true, only returns enabled functions of apps that are allowed to be used by the agent/accessor. If false, returns all functions of all apps. */
+  allowedOnly?: boolean;
+  /** Format of the function definition to return */
   format?: FunctionDefinitionFormat;
 }
 
@@ -97,22 +104,18 @@ export class ACI {
    *
    * It supports handling built-in meta functions (ACI_SEARCH_FUNCTIONS, ACI_EXECUTE_FUNCTION) and also handling
    * executing third-party functions directly.
-   *
-   * @param functionName - Name of the function to be called
-   * @param functionArguments - Object containing the input arguments for the function
-   * @param linkedAccountOwnerId - Specifies the end-user (account owner) on behalf of whom to execute functions
-   * @param allowedAppsOnly - If true, only returns functions/apps that are allowed to be used by the agent/accessor
-   * @param format - Format of the function definition (for ACI_SEARCH_FUNCTIONS)
+   * 
+   * @param {HandleFunctionCallParams} params
    * @returns The result of the function execution (varies based on the function)
    */
   public async handleFunctionCall(params: HandleFunctionCallParams): Promise<any> {
-    const { functionName, functionArguments, linkedAccountOwnerId, allowedAppsOnly, format } =
+    const { functionName, functionArguments, linkedAccountOwnerId, allowedOnly, allowedAppsOnly, format } =
       params;
 
     if (functionName === ACI_SEARCH_FUNCTIONS) {
       const functions = await this.functions.search({
         ...functionArguments,
-        allowed_apps_only: allowedAppsOnly,
+        allowed_only: allowedOnly ?? allowedAppsOnly,
         format: format,
       });
 
